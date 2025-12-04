@@ -66,7 +66,7 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
 
         for(int i = 0; i < nAlumnos; i++){
             for(int j = 0; j < 9; j++){
-                
+                //comprobacion si el dni esta registrado 
             }
             if(aux.dni == alumnos[i].dni){
                 cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
@@ -300,5 +300,6 @@ int main(){
             }
         }
     }while(opcion != 0);
+    return 0;
 }
 //Función main--------------------------------------------------------------------------------------------------------------------------------------------------
