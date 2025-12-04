@@ -3,7 +3,9 @@
 #include <iomanip>
 #include <unistd.h>
 #include <string>
+
 #define clear system("clear");
+
 using namespace std;
 
 const int alumnosMax = 100, vehiculosMax = 20, practicasMax = 100;
