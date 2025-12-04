@@ -65,9 +65,6 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
         cin.getline(aux.dni, 9);
 
         for(int i = 0; i < nAlumnos; i++){
-            for(int j = 0; j < 9; j++){
-                //comprobacion si el dni esta registrado 
-            }
             if(aux.dni == alumnos[i].dni){
                 cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
                 sleep(1);
@@ -78,6 +75,7 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
                 for(int j = 0; j < 9; j++){
                     alumnos[i].dni[j] = aux.dni[j];
                 }
+                cin.ignore();
                 //Entrada del nombre de pila con el segundo, sin incluir el apellido
                 cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
                 getline(cin, aux.nombres);
