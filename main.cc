@@ -60,55 +60,21 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
         sleep(1);
     }
     else{
-        cin.ignore();
+        cin.ignore(256, '\n');
         cout << "Introduzca el DNI del alumno: ";
         cin.getline(aux.dni, 9);
-
-        for(int i = 0; i < nAlumnos; i++){
-            if(aux.dni == alumnos[i].dni){
-                cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
-                sleep(1);
-                cout << "PRUEBE DE NUEVO" << endl;
-                sleep(1);
-            }
-            else{
-                for(int j = 0; j < 9; j++){
-                    alumnos[i].dni[j] = aux.dni[j];
-                }
-                cin.ignore();
-                //Entrada del nombre de pila con el segundo, sin incluir el apellido
-                cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
-                getline(cin, aux.nombres);
-                alumnos[i].nombres = aux.nombres; 
-                cin.ignore();
-                sleep(1);
-
-                //Entrada de los apellidos.
-                cout << "INTRODUZCLA LOS APELLIDOS DEL ALUMNO: ";
-                getline(cin, aux.apellidos);
-                alumnos[i].apellidos = aux.apellidos;
-                cin.ignore();
-                sleep(1);
-
-                //Entrada del telefono
-                cout << "INTRODUZCA EL NUMERO DE TELEFONO(EMPEZANDO POR SU PREFIJO): ";
-                getline(cin, aux.numeroTelefono);
-                alumnos[i].numeroTelefono = aux.numeroTelefono;
-                cin.ignore();
-                sleep(1);
-
-                alumnos[i].nPracticas = 0;
-
-                clear;
-                header();
-                cout << "Quiere añadir a otro alumno? (0-No/1-Si): ";
-                cin >> opcion;
-                if(opcion == 0){
-                    i = nAlumnos;
-                }
-            }
-            
-        }
+        cout << "Introduzca el nombre del alumno: ";
+        getline(cin, aux.nombres);
+        cout << "Introduzca los apellidos del alumno: ";
+        getline(cin, aux.apellidos);
+        cout << "Introduzca el número de teléfono: ";
+        getline(cin, aux.numeroTelefono);
+        
+        aux.nPracticas = 0;
+        alumnos[nAlumnos - 1] = aux;
+        
+        cout << "Alumno registrado correctamente" << endl;
+        sleep(2);
     }
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
@@ -137,31 +103,27 @@ void menuAlumnos(alumno alumnos[],int &nAlumnos){
             cout << "INTENTE DE NUEVO" << endl;
             sleep(1);
         }
-    }while((opcion < 0) || (opcion > 3));
-
-
-    switch(opcion){
-        case 1:{
-            altaAlumno(alumnos,nAlumnos);//Implementar alta de alumno
-            clear;
-            break;
+        else{
+            switch(opcion){
+                case 1:{
+                    altaAlumno(alumnos,nAlumnos);
+                    break;
+                }
+                case 2:{
+                    //Implementar baja de alumnos
+                    break;
+                }
+                case 3 :{
+                    //Implementar modificación de datos
+                    break;
+                }
+                case 0:{ //Sale del apartado de alumnos
+                    break;
+                }
+            }
+            if(opcion == 0) break;
         }
-        case 2:{
-            //Implementar baja de alumnos
-            clear;
-            break;
-        }
-        case 3 :{
-            //Implementar modificación de datos
-            clear;
-            break;
-
-        }
-        default:{ //Sale del apartado de alumnos
-            clear;
-            break;
-        }
-    }
+    }while(true);
 }
 
 void menuVehiculos(){
