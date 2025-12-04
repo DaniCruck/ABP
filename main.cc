@@ -48,7 +48,6 @@ void header(){
 void altaAlumno(alumno alumnos[], int &nAlumnos){
     alumno aux;
     int opcion;
-    char dni[9];
 
     nAlumnos++; 
     clear;
@@ -63,13 +62,13 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
     else{
         cin.ignore();
         cout << "Introduzca el DNI del alumno: ";
-        cin.getline(dni, 9);
+        cin.getline(aux.dni, 9);
 
         for(int i = 0; i < nAlumnos; i++){
             for(int j = 0; j < 9; j++){
                 
             }
-            if(dni == alumnos[i].dni){
+            if(aux.dni == alumnos[i].dni){
                 cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
                 sleep(1);
                 cout << "PRUEBE DE NUEVO" << endl;
@@ -77,7 +76,7 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
             }
             else{
                 for(int j = 0; j < 9; j++){
-                    alumnos[i].dni[j] = dni[j];
+                    alumnos[i].dni[j] = aux.dni[j];
                 }
                 //Entrada del nombre de pila con el segundo, sin incluir el apellido
                 cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
@@ -279,7 +278,7 @@ int main(){
     int opcion, nAlumnos = 0, nVehiculos, nClases;
 
     //Función del menu principal
-        do{
+    do{
         opcion = menu();
 
         switch(opcion){
