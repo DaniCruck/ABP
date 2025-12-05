@@ -11,28 +11,28 @@ using namespace std;
 const int alumnosMax = 100, vehiculosMax = 20, practicasMax = 100;
 
 //Registros----------------------------------------------------------------------------------------------------------------------------------------------------
-struct vehiculo {
+struct Tvehiculo {
     string marca, modelo, matricula;
     int tipoVehiculo; //0 - Coche, 1 - Moto, 2 - Camión
     float kilometraje;
     int estado; //0 - Mantenimiento, 1 - Disponible
 };
 
-struct fecha{
+struct Tfecha{
     int dia, mes, año;
 };
 
-struct practica{
+struct Tpractica{
     string matricula;
-    fecha fechaPractica;
+    Tfecha fechaPractica;
     int duracionPractica, precioClase;
     float kmRecorridos;
 };
 
-struct alumno{
-    char dni[9];
+struct Talumno{
+    string dni;
     string nombres, apellidos, numeroTelefono;
-    practica clasesRealizadas[100];
+    Tpractica clasesRealizadas[100];
     int nPracticas;
 };
 //Registros---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,38 +43,76 @@ void header(){
     cout << "-------------------------------------------------" << endl;
 }
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
-
+bool comprobarLetraDNI(Talumno alumnos[], int i){
+//hay que hacerlo
+}
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
-void altaAlumno(alumno alumnos[], int &nAlumnos){
-    alumno aux;
-    int opcion;
+void altaAlumno(Talumno alumnos[], int &nAlumnos){
+    string auxdni,
+           opcion;
 
-    nAlumnos++; 
+
     clear;
     header();
     if(nAlumnos >= alumnosMax){
-        nAlumnos--;
         cout << "NO SE PUEDEN REGISTRAR MÁS ALUMNOS" << endl;
-        sleep(1);
+        sleep(0.5);
         cout << "DEBE DAR DE BAJA A UN ALUMNO PARA AÑADIR A UNO NUEVO" << endl;
-        sleep(1);
+        sleep(0.5);
     }
     else{
-        cin.ignore(256, '\n');
-        cout << "Introduzca el DNI del alumno: ";
-        cin.getline(aux.dni, 9);
-        cout << "Introduzca el nombre del alumno: ";
-        getline(cin, aux.nombres);
-        cout << "Introduzca los apellidos del alumno: ";
-        getline(cin, aux.apellidos);
-        cout << "Introduzca el número de teléfono: ";
-        getline(cin, aux.numeroTelefono);
-        
-        aux.nPracticas = 0;
-        alumnos[nAlumnos - 1] = aux;
-        
-        cout << "Alumno registrado correctamente" << endl;
-        sleep(2);
+        cin.ignore();
+        int cont=0;
+        for(int i = 0; i <= nAlumnos; i++){
+            cout << "Introduzca el DNI del alumno: ";
+            getline(cin,auxdni);
+            for(int p = 0; p<=nAlumnos; p++){
+                //comprobacion si el dni esta registrado 
+                cont=0;
+                for(int j = 0; j < 9; j++){
+                    if(auxdni[j]==alumnos[p].dni[j])cont++;
+                }
+                if(cont==9)p=nAlumnos;
+            }
+            if(cont==9){
+                cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
+                sleep(1);
+                cout << "PRUEBE DE NUEVO" << endl;
+                sleep(0.5);
+                i--;
+            }else{
+                //creación de nuevo alumno
+                //comprobar si la letra introducida en el DNI corresponde a los números
+                comprobarLetraDNI(alumnos, i);
+                alumnos[i].dni = auxdni;
+                //Entrada del nombre de pila con el segundo, sin incluir el apellido
+                cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
+                getline(cin, alumnos[i].nombres);
+                sleep(0.5);
+
+                //Entrada de los apellidos.
+                cout << "INTRODUZCLA LOS APELLIDOS DEL ALUMNO: ";
+                getline(cin, alumnos[i].apellidos);
+                sleep(0.5);
+
+                //Entrada del telefono
+                cout << "INTRODUZCA EL NUMERO DE TELEFONO(FORMATO: +XXX XXXXXXXXX): ";
+                getline(cin, alumnos[i].numeroTelefono);
+                sleep(0.5);
+
+                alumnos[i].nPracticas = 0;
+                nAlumnos++;
+
+                clear;
+                header();
+                cout << "Quiere añadir a otro alumno? (0-No/1-Si): ";
+                getline(cin,opcion);
+                if(opcion == "no"||opcion == "No"||opcion == "NO"||opcion == "n"||opcion == "N"||opcion == "0"){
+                    i = nAlumnos;
+                }
+            }
+            
+        }
     }
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
@@ -82,7 +120,7 @@ void altaAlumno(alumno alumnos[], int &nAlumnos){
 
 //Funciones del menú------------------------------------------------------------------------------------------------------------------------------------------
 
-void menuAlumnos(alumno alumnos[],int &nAlumnos){
+void menuAlumnos(Talumno alumnos[],int &nAlumnos){
     int opcion;
     
     do{
@@ -201,7 +239,7 @@ void menuListas(){
 }
 
 int menu(){
-    int opcion;
+    int opcion=0;
     clear;
 
     header();
@@ -231,9 +269,9 @@ int menu(){
 //Función main------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
     //Listas de los distintos objetos
-    alumno alumnos[alumnosMax];
-    vehiculo vehiculos[vehiculosMax];
-    practica practicas[practicasMax];
+    Talumno alumnos[alumnosMax];
+    Tvehiculo vehiculos[vehiculosMax];
+    Tpractica practicas[practicasMax];
 
     int opcion, nAlumnos = 0, nVehiculos, nClases;
 
