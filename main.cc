@@ -45,12 +45,80 @@ void header(){
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
 bool comprobarLetraDNI(Talumno alumnos[], int i){
 //hay que hacerlo
-bool correcto;
+bool correcto=false;
 int numDNI=stoi(alumnos[i].dni);
 char letraDNI=alumnos[i].dni.back();
 switch(numDNI%23){
     case 0:
         if(letraDNI=='T') correcto=true;
+        break;
+    case 1:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 2:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 3:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 4:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 5:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 6:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 7:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 8:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 9:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 10:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 11:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 12:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 13:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 14:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 15:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 16:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 17:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 18:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 19:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 20:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 21:
+        if(letraDNI=='T') correcto=true;
+        break;
+    case 22:
+        if(letraDNI=='T') correcto=true;
+        break;
+    
 }
 
 }
