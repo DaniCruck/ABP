@@ -156,11 +156,14 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
                 cout << "PRUEBE DE NUEVO" << endl;
                 sleep(1);
                 i--;
+            }else if(comprobarLetraDNI(auxdni, i)==false){
+                cout<<"El DNI introducido no es válido."<<endl;
+                sleep(0.5);
+                cout<<"PRUEBE DE NUEVO"<<endl;
+                sleep(0.5);
+                i--;
             }else{
                 //creación de nuevo alumno
-                //comprobar si la letra introducida en el DNI corresponde a los números
-                cout<<alumnos[i].dni<<endl;
-                comprobarLetraDNI(auxdni, i);
                 alumnos[i].dni = auxdni;
                 //Entrada del nombre de pila con el segundo, sin incluir el apellido
                 cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
