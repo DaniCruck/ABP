@@ -1,4 +1,4 @@
-//Hecho por DañaCrack, Carlitos, y Sergio Payune
+//Hecho por DañaCrack, Carlitos, y Sergio Paya
 #include <iostream>
 #include <iomanip>
 #include <unistd.h>
