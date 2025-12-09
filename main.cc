@@ -43,7 +43,7 @@ void header(){
     cout << "-------------------------------------------------" << endl;
 }
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
-bool comprobarLetraDNI(string auxdni, int i){
+bool comprobarLetraDNI(string auxdni){
     //hay que hacerlo
     bool correcto=false;
     int numDNI=stoi(auxdni);
@@ -138,25 +138,23 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
     }
     else{
         cin.ignore();
-        int cont=0;
+        bool iguales=false;
         for(int i = 0; i <= nAlumnos; i++){
             cout << "Introduzca el DNI del alumno: ";
             getline(cin,auxdni);
-            for(int p = 0; p<=nAlumnos; p++){
+            for(int p = 0; p<nAlumnos; p++){
                 //comprobacion si el dni esta registrado 
-                cont=0;
-                for(int j = 0; j < 9; j++){
-                    if(auxdni[j]==alumnos[p].dni[j])cont++;
-                }
-                if(cont==9)p=nAlumnos;
+                if(auxdni==alumnos[p].dni){
+                    p=nAlumnos;
+                    iguales=true;
             }
-            if(cont==9){
+            if(iguales==true){
                 cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
                 sleep(0.5);
                 cout << "PRUEBE DE NUEVO" << endl;
                 sleep(1);
                 i--;
-            }else if(comprobarLetraDNI(auxdni, i)==false){
+            }else if(comprobarLetraDNI(auxdni)==false){
                 cout<<"El DNI introducido no es válido."<<endl;
                 sleep(0.5);
                 cout<<"PRUEBE DE NUEVO"<<endl;
