@@ -45,6 +45,14 @@ void header(){
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
 bool comprobarLetraDNI(Talumno alumnos[], int i){
 //hay que hacerlo
+bool correcto;
+int numDNI=stoi(alumnos[i].dni);
+char letraDNI=alumnos[i].dni.back();
+switch(numDNI%23){
+    case 0:
+        if(letraDNI=='T') correcto=true;
+}
+
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 void altaAlumno(Talumno alumnos[], int &nAlumnos){
