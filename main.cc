@@ -43,11 +43,11 @@ void header(){
     cout << "-------------------------------------------------" << endl;
 }
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
-bool comprobarLetraDNI(Talumno alumnos[], int i){
+bool comprobarLetraDNI(string auxdni, int i){
     //hay que hacerlo
     bool correcto=false;
-    int numDNI=stoi(alumnos[i].dni);
-    char letraDNI=alumnos[i].dni.back();
+    int numDNI=stoi(auxdni);
+    char letraDNI=auxdni.back();
     switch(numDNI%23){
         case 0:
             if(letraDNI=='T') correcto=true;
@@ -152,14 +152,15 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
             }
             if(cont==9){
                 cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
-                sleep(1);
-                cout << "PRUEBE DE NUEVO" << endl;
                 sleep(0.5);
+                cout << "PRUEBE DE NUEVO" << endl;
+                sleep(1);
                 i--;
             }else{
                 //creación de nuevo alumno
                 //comprobar si la letra introducida en el DNI corresponde a los números
-                comprobarLetraDNI(alumnos, i);
+                cout<<alumnos[i].dni<<endl;
+                comprobarLetraDNI(auxdni, i);
                 alumnos[i].dni = auxdni;
                 //Entrada del nombre de pila con el segundo, sin incluir el apellido
                 cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
