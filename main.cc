@@ -44,82 +44,82 @@ void header(){
 }
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
 bool comprobarLetraDNI(Talumno alumnos[], int i){
-//hay que hacerlo
-bool correcto=false;
-int numDNI=stoi(alumnos[i].dni);
-char letraDNI=alumnos[i].dni.back();
-switch(numDNI%23){
-    case 0:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 1:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 2:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 3:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 4:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 5:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 6:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 7:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 8:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 9:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 10:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 11:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 12:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 13:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 14:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 15:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 16:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 17:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 18:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 19:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 20:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 21:
-        if(letraDNI=='T') correcto=true;
-        break;
-    case 22:
-        if(letraDNI=='T') correcto=true;
-        break;
-    
-}
+    //hay que hacerlo
+    bool correcto=false;
+    int numDNI=stoi(alumnos[i].dni);
+    char letraDNI=alumnos[i].dni.back();
+    switch(numDNI%23){
+        case 0:
+            if(letraDNI=='T') correcto=true;
+            break;
+        case 1:
+            if(letraDNI=='R') correcto=true;
+            break;
+        case 2:
+            if(letraDNI=='W') correcto=true;
+            break;
+        case 3:
+            if(letraDNI=='A') correcto=true;
+            break;
+        case 4:
+            if(letraDNI=='G') correcto=true;
+            break;
+        case 5:
+            if(letraDNI=='M') correcto=true;
+            break;
+        case 6:
+            if(letraDNI=='Y') correcto=true;
+            break;
+        case 7:
+            if(letraDNI=='F') correcto=true;
+            break;
+        case 8:
+            if(letraDNI=='P') correcto=true;
+            break;
+        case 9:
+            if(letraDNI=='D') correcto=true;
+            break;
+        case 10:
+            if(letraDNI=='X') correcto=true;
+            break;
+        case 11:
+            if(letraDNI=='B') correcto=true;
+            break;
+        case 12:
+            if(letraDNI=='N') correcto=true;
+            break;
+        case 13:
+            if(letraDNI=='J') correcto=true;
+            break;
+        case 14:
+            if(letraDNI=='Z') correcto=true;
+            break;
+        case 15:
+            if(letraDNI=='S') correcto=true;
+            break;
+        case 16:
+            if(letraDNI=='Q') correcto=true;
+            break;
+        case 17:
+            if(letraDNI=='V') correcto=true;
+            break;
+        case 18:
+            if(letraDNI=='H') correcto=true;
+            break;
+        case 19:
+            if(letraDNI=='L') correcto=true;
+            break;
+        case 20:
+            if(letraDNI=='C') correcto=true;
+            break;
+        case 21:
+            if(letraDNI=='K') correcto=true;
+            break;
+        case 22:
+            if(letraDNI=='E') correcto=true;
+            break;
+    }
+    return correcto;
 
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
