@@ -48,88 +48,18 @@ bool comprobarLetraDNI(string auxdni){
     bool correcto=false;
     int numDNI=stoi(auxdni);
     char letraDNI=auxdni.back();
-    switch(numDNI%23){
-        case 0:
-            if(letraDNI=='T') correcto=true;
-            break;
-        case 1:
-            if(letraDNI=='R') correcto=true;
-            break;
-        case 2:
-            if(letraDNI=='W') correcto=true;
-            break;
-        case 3:
-            if(letraDNI=='A') correcto=true;
-            break;
-        case 4:
-            if(letraDNI=='G') correcto=true;
-            break;
-        case 5:
-            if(letraDNI=='M') correcto=true;
-            break;
-        case 6:
-            if(letraDNI=='Y') correcto=true;
-            break;
-        case 7:
-            if(letraDNI=='F') correcto=true;
-            break;
-        case 8:
-            if(letraDNI=='P') correcto=true;
-            break;
-        case 9:
-            if(letraDNI=='D') correcto=true;
-            break;
-        case 10:
-            if(letraDNI=='X') correcto=true;
-            break;
-        case 11:
-            if(letraDNI=='B') correcto=true;
-            break;
-        case 12:
-            if(letraDNI=='N') correcto=true;
-            break;
-        case 13:
-            if(letraDNI=='J') correcto=true;
-            break;
-        case 14:
-            if(letraDNI=='Z') correcto=true;
-            break;
-        case 15:
-            if(letraDNI=='S') correcto=true;
-            break;
-        case 16:
-            if(letraDNI=='Q') correcto=true;
-            break;
-        case 17:
-            if(letraDNI=='V') correcto=true;
-            break;
-        case 18:
-            if(letraDNI=='H') correcto=true;
-            break;
-        case 19:
-            if(letraDNI=='L') correcto=true;
-            break;
-        case 20:
-            if(letraDNI=='C') correcto=true;
-            break;
-        case 21:
-            if(letraDNI=='K') correcto=true;
-            break;
-        case 22:
-            if(letraDNI=='E') correcto=true;
-            break;
-    }
+    string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+    if(letras[numDNI%23]==letraDNI) correcto=true;
     return correcto;
 
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 void altaAlumno(Talumno alumnos[], int &nAlumnos){
-    string auxdni,
-           opcion;
-
+    string auxdni, opcion;
 
     clear;
     header();
+
     if(nAlumnos >= alumnosMax){
         cout << "NO SE PUEDEN REGISTRAR MÁS ALUMNOS" << endl;
         sleep(0.5);
@@ -138,42 +68,44 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
     }
     else{
         cin.ignore();
-        bool iguales=false;
-        for(int i = 0; i <= nAlumnos; i++){
+
+        while(true){ 
+            
             cout << "Introduzca el DNI del alumno: ";
-            getline(cin,auxdni);
-            for(int p = 0; p<nAlumnos; p++){
-                //comprobacion si el dni esta registrado 
-                if(auxdni==alumnos[p].dni){
-                    p=nAlumnos;
-                    iguales=true;
+            getline(cin, auxdni);
+
+            bool existe = false; 
+            for(int p = 0; p < nAlumnos; p++){
+                if(auxdni == alumnos[p].dni){
+                    existe = true;
+                    p = nAlumnos;
+                }
             }
-            if(iguales==true){
+            if(existe == true){
                 cout << "ESTE DNI YA ESTÁ REGISTRADO" << endl;
                 sleep(0.5);
                 cout << "PRUEBE DE NUEVO" << endl;
                 sleep(1);
-                i--;
-            }else if(comprobarLetraDNI(auxdni)==false){
-                cout<<"El DNI introducido no es válido."<<endl;
+            }
+            else if(comprobarLetraDNI(auxdni) == false){
+                cout << "DNI NO VÁLIDO (Letra incorrecta o formato erróneo)" << endl;
                 sleep(0.5);
-                cout<<"PRUEBE DE NUEVO"<<endl;
-                sleep(0.5);
-                i--;
-            }else{
-                //creación de nuevo alumno
+                cout << "PRUEBE DE NUEVO" << endl;
+                sleep(1);
+            }
+            else{
+                int i = nAlumnos; 
+
                 alumnos[i].dni = auxdni;
-                //Entrada del nombre de pila con el segundo, sin incluir el apellido
+                
                 cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
                 getline(cin, alumnos[i].nombres);
                 sleep(0.5);
 
-                //Entrada de los apellidos.
                 cout << "INTRODUZCLA LOS APELLIDOS DEL ALUMNO: ";
                 getline(cin, alumnos[i].apellidos);
                 sleep(0.5);
 
-                //Entrada del telefono
                 cout << "INTRODUZCA EL NUMERO DE TELEFONO(FORMATO: +XXX XXXXXXXXX): ";
                 getline(cin, alumnos[i].numeroTelefono);
                 sleep(0.5);
@@ -184,12 +116,15 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
                 clear;
                 header();
                 cout << "Quiere añadir a otro alumno? (0-No/1-Si): ";
-                getline(cin,opcion);
+                getline(cin, opcion);
+
                 if(opcion == "no"||opcion == "No"||opcion == "NO"||opcion == "n"||opcion == "N"||opcion == "0"){
-                    i = nAlumnos;
+                    break;
                 }
+                
+                clear;
+                header();
             }
-            
         }
     }
 }
@@ -351,7 +286,7 @@ int main(){
     Tvehiculo vehiculos[vehiculosMax];
     Tpractica practicas[practicasMax];
 
-    int opcion, nAlumnos = 0, nVehiculos, nClases;
+    int opcion, nAlumnos = 0, nVehiculos=0, nClases=0;
 
     //Función del menu principal
     do{
