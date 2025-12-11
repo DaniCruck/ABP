@@ -68,8 +68,8 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
     }
     else{
         cin.ignore();
-
-        while(true){ 
+        bool alumnoNuevo=true;
+        while(alumnoNuevo==true){ 
             
             cout << "Introduzca el DNI del alumno: ";
             getline(cin, auxdni);
@@ -117,15 +117,74 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
                 header();
                 cout << "Quiere añadir a otro alumno? (0-No/1-Si): ";
                 getline(cin, opcion);
-
-                if(opcion == "no"||opcion == "No"||opcion == "NO"||opcion == "n"||opcion == "N"||opcion == "0"){
-                    break;
+                //hecho para que no se entre al proceso de creacion de alumno por error
+                if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                }else{
+                    alumnoNuevo=false;
                 }
-                
                 clear;
                 header();
             }
         }
+    }
+}
+void bajaAlumno(Talumno alumnos[], int &nAlumnos){
+    string auxdni,opcion;
+    clear;
+    header();
+    cin.ignore();
+    cout<<"Introduce el DNI del alumno a dar de baja:";
+    getline(cin,auxdni);
+    clear;
+    sleep(0.5);
+    for(int i=0;i<nAlumnos;i++){
+        if(auxdni==alumnos[i].dni){
+            cout<<"Información del alumno a dar de baja:"<<endl;
+            cout<<"Nombre: "<<alumnos[i].nombres<<" "<<alumnos[i].apellidos<<endl;
+            cout<<"DNI:"<<alumnos[i].dni<<endl;
+            cout<<"Número de telefono: "<<alumnos[i].numeroTelefono<<endl;
+            cout<<"Número de practicas hechas: "<<alumnos[i].nPracticas<<endl;
+            sleep(0.5);
+            cout<<"¿Estás seguro de que quieres dar de baja a este alumno(0-No/1-Si)?";
+            getline(cin,opcion);
+            //Solo se acepta si para evitar eliminaciones sin querer
+            if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                for(int j=i;j<nAlumnos-1;j++){
+                    alumnos[j]=alumnos[j+1];
+                }         
+                nAlumnos--;
+                cout<<"Alumno eliminado con éxito."<<endl;
+            }else{
+                i=nAlumnos;
+            }
+        }
+    }
+    clear;
+}
+void mostrarAlumnos(Talumno alumnos[], int nAlumnos){
+    clear;
+    //Limpiar el buffer para que no se salte la pausa de despues de la lista
+    cin.ignore();
+    if(nAlumnos>0){
+        for(int i=0;i<nAlumnos;i++){
+            //Lista de alumnos
+            cout<<"Alumno nº"<<i+1<<endl;
+            sleep(0.5);
+            cout<<"Nombre: "<<alumnos[i].nombres<<" "<<alumnos[i].apellidos<<endl;
+            cout<<"DNI:"<<alumnos[i].dni<<endl;
+            cout<<"Número de telefono: "<<alumnos[i].numeroTelefono<<endl;
+            cout<<"Número de practicas hechas: "<<alumnos[i].nPracticas<<endl;
+            cout<<setw(20)<<"--------------------------"<<endl;
+        }
+        cout<<"Pulsa enter para salir.";
+        //El programa no avanza hasta que el usuario pulse enter
+        cin.get();
+        
+    }else{
+        clear;
+        cout<<"No hay alumnos registrados en el sistema."<<endl;
+        sleep(1.5);
+        clear;
     }
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
@@ -161,7 +220,7 @@ void menuAlumnos(Talumno alumnos[],int &nAlumnos){
                     break;
                 }
                 case 2:{
-                    //Implementar baja de alumnos
+                    bajaAlumno(alumnos,nAlumnos);
                     break;
                 }
                 case 3 :{
@@ -226,28 +285,37 @@ void menuVehiculos(){
     }
 }
 
-void menuListas(){
+void menuListas(Talumno alumnos[], int nAlumnos){
     int opcion;
 
     clear;
-
+//While true es para que al salir de cualquiera de las listas vuelva a repetir el menu hasta que se envie un 0
     do{
-        header();
-        cout << "1 - " << setw(5) << "Mostrar alumnos" << endl;
-        cout << "2 - " << setw(5) << "Mostrar vehiculos" << endl;
-        cout << "0 - " << setw(5) << "Salir" << endl;
-        cout << "--------------------------------------------" << endl;
-        cout << "Introduzca una opción: ";
+        do{
+            header();
+            cout << "1 - " << setw(5) << "Mostrar alumnos" << endl;
+            cout << "2 - " << setw(5) << "Mostrar vehiculos" << endl;
+            cout << "0 - " << setw(5) << "Salir" << endl;
+            cout << "--------------------------------------------" << endl;
+            cout << "Introduzca una opción: ";
 
-        cin >> opcion;
+            cin >> opcion;
 
-        if((opcion < 0) || (opcion > 3)){
-            cout << "RANGO INVALIDO" << endl;
-            sleep(1);
-            cout << "INTENTE DE NUEVO" << endl;
-            sleep(1);
-        }
-    }while((opcion < 0) || (opcion > 2));    
+            if((opcion < 0) || (opcion >= 3)){
+                cout << "RANGO INVALIDO" << endl;
+                sleep(1);
+                cout << "INTENTE DE NUEVO" << endl;
+                sleep(1);
+                clear;
+            }else{
+                switch(opcion){
+                    case 1:
+                        mostrarAlumnos(alumnos, nAlumnos);
+                        break;
+                }
+            }
+        }while((opcion < 0) || (opcion > 2));
+    }while(true && opcion!=0);    
 
 }
 
@@ -259,7 +327,7 @@ int menu(){
     cout << "1 - " << setw(5) << "Gestionar alumnos" << endl;
     cout << "2 - " << setw(5) << "Gestionar vehiculos" << endl;
     cout << "3 - " << setw(5) << "Dar de alta una clase" << endl;
-    cout << "4 - " << setw(5) << "Mostrar listas" << endl;
+    cout << "4 - " << setw(5) << "Mostrar listas(Enter para salir)" << endl;
     cout << "0 - " << setw(5) << "Salir" << endl;
     cout << "--------------------------------------------" << endl;
     cout << "Introduzca una opción: ";
@@ -306,7 +374,7 @@ int main(){
                 break;
             }
             case 4:{
-                menuListas();
+                menuListas(alumnos, nAlumnos);
                 break;
             }
         }
