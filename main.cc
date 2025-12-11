@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <unistd.h>
-#include <string>
+#include <cstring>
 
 #define clear system("clear");
 
@@ -43,6 +43,8 @@ void header(){
     cout << "-------------------------------------------------" << endl;
 }
 //Encabezado--------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 bool comprobarLetraDNI(string auxdni){
     //hay que hacerlo
     bool correcto=false;
@@ -53,7 +55,7 @@ bool comprobarLetraDNI(string auxdni){
     return correcto;
 
 }
-//Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
+
 void altaAlumno(Talumno alumnos[], int &nAlumnos){
     string auxdni, opcion;
 
@@ -128,6 +130,7 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
         }
     }
 }
+
 void bajaAlumno(Talumno alumnos[], int &nAlumnos){
     string auxdni,opcion;
     clear;
@@ -161,6 +164,7 @@ void bajaAlumno(Talumno alumnos[], int &nAlumnos){
     }
     clear;
 }
+
 void mostrarAlumnos(Talumno alumnos[], int nAlumnos){
     clear;
     //Limpiar el buffer para que no se salte la pausa de despues de la lista
@@ -179,12 +183,189 @@ void mostrarAlumnos(Talumno alumnos[], int nAlumnos){
         cout<<"Pulsa enter para salir.";
         //El programa no avanza hasta que el usuario pulse enter
         cin.get();
+        clear;
         
     }else{
         clear;
         cout<<"No hay alumnos registrados en el sistema."<<endl;
         sleep(1.5);
         clear;
+    }
+}
+
+void modificarAlumno(Talumno alumnos[], int nAlumnos){
+    char  opcion;
+    Talumno auxAlumno;
+    bool letraCorrecta, encontrado;
+    char confirmacion, repetir;
+
+    clear;
+    header();
+    cin.ignore();
+
+    cout<<"Introduce el DNI del alumno a modificar: ";
+    getline(cin,auxAlumno.dni);
+    for(int i = 0; i < nAlumnos; i++){
+        if(auxAlumno.dni == alumnos[i].dni){
+            do{
+                clear;
+                header();
+                cout << "Datos actuales del alumno:" << endl;
+                cout << "--------------------------" << endl;
+                cout << "DNI: " << alumnos[i].dni << endl;
+                cout << "Nombre: " << alumnos[i].nombres << endl;
+                cout << "Apellidos: " << alumnos[i].apellidos << endl;
+                cout << "Número de teléfono: " << alumnos[i].numeroTelefono << endl;
+                cout << "--------------------------" << endl;
+
+                cout << "Que dato desea modificar?" << endl;
+                cout << "1 - Nombre" << endl;
+                cout << "2 - Apellidos" << endl;
+                cout << "3 - Número de teléfono" << endl;
+                cout << "0 - Salir" << endl;
+                cin >> opcion;
+
+                switch(opcion){
+                    case '1':
+                        cin.ignore();
+                        cout<<"Introduce el nuevo nombre completo (SIN APELLIDOS): ";
+                        getline(cin,auxAlumno.nombres);
+                        cout << "Seguro que es el dato correcto? (s/n): ";
+
+                        cin >> confirmacion;
+                        if(confirmacion == 's' || confirmacion == 'S'){
+                            alumnos[i].nombres = auxAlumno.nombres;
+                            cout<<"Nombre modificado con éxito."<<endl;
+                        }
+                        sleep(1);
+                        
+                        cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                        cin >> repetir;
+                        
+                        break;
+
+                    case '2':
+                        cin.ignore();
+                        cout<<"Introduce los nuevos apellidos: ";
+                        getline(cin,auxAlumno.apellidos);
+                        cout << "Seguro que es el dato correcto? (s/n): ";
+
+                        cin >> confirmacion;
+                        if(confirmacion == 's' || confirmacion == 'S'){
+                            alumnos[i].apellidos = auxAlumno.apellidos;
+                            cout<<"Apellidos modificados con éxito."<<endl;
+                        }
+                        sleep(1);
+                        
+                        cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                        cin >> repetir;
+                        
+                        break;
+
+                    case '3':
+                        cin.ignore();
+                        cout<<"Introduce el nuevo número de teléfono: ";
+                        getline(cin,auxAlumno.numeroTelefono);
+
+                        cout << "Seguro que es el dato correcto? (s/n): ";
+
+                        cin >> confirmacion;
+                        if(confirmacion == 's' || confirmacion == 'S'){
+                            alumnos[i].numeroTelefono = auxAlumno.numeroTelefono;
+                            cout<<"Número de teléfono modificado con éxito."<<endl;
+                        }
+                        sleep(1);
+                        
+                        cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                        cin >> repetir;
+                        
+                        break;
+
+                    case '0':
+                        cout<<"Saliendo del menú de modificación."<<endl;
+                        sleep(1);
+
+                        repetir = 'n';
+
+                        break;
+                }
+                
+            }while(repetir == 's' || repetir == 'S');
+            i = nAlumnos; //Para salir del bucle una vez encontrado el alumno
+        }
+    }
+
+}
+
+void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
+    string auxMatricula, tipo;
+    int opcion;
+    clear;
+    header();
+
+    if(nVehiculos >= vehiculosMax){
+        cout << "NO SE PUEDEN REGISTRAR MÁS VEHÍCULOS" << endl;
+        sleep(0.5);
+        cout << "DEBE DAR DE BAJA A UN VEHÍCULO PARA AÑADIR A UNO NUEVO" << endl;
+        sleep(0.5);
+    }
+    else{
+        cin.ignore();
+        bool vehiculoNuevo=true;
+        while(vehiculoNuevo==true){ 
+            
+            cout << "Introduzca la matrícula del vehículo (Formato: 1234ABC): ";
+            getline(cin, auxMatricula);
+
+            bool existe = false; 
+            for(int p = 0; p < nVehiculos; p++){
+                if(auxMatricula == vehiculos[p].matricula){
+                    existe = true;
+                    p = nVehiculos;
+                }
+            }
+            if(existe == true){
+                cout << "ESTA MATRÍCULA YA ESTÁ REGISTRADA" << endl;
+                sleep(0.5);
+                cout << "PRUEBE DE NUEVO" << endl;
+                sleep(1);
+            }
+            else{
+                int i = nVehiculos; 
+
+                vehiculos[i].matricula = auxMatricula;
+                
+                cout << "INTRODUZCA LA MARCA DEL VEHÍCULO: ";
+                getline(cin, vehiculos[i].marca);
+                sleep(0.5);
+
+                cout << "INTRODUZCA EL MODELO DEL VEHÍCULO: ";
+                getline(cin, vehiculos[i].modelo);
+                sleep(0.5);
+
+                cout << "INTRODUZCA EL TIPO DE VEHÍCULO (0-Coche/1-Moto/2-Camión): ";
+                cin >> vehiculos[i].tipoVehiculo;
+                sleep(0.5);
+
+                cout << "INTRODUZCA EL KILOMETRAJE DEL VEHÍCULO: ";
+                cin >> vehiculos[i].kilometraje;
+                sleep(0.5);
+
+                cout << "INTRODUZCA EL ESTADO DEL VEHÍCULO (0-Mantenimiento/1-Disponible): ";
+                cin >> vehiculos[i].estado;
+                sleep(0.5);
+
+                nVehiculos++;
+
+                clear;
+                header();
+                cout << "Quiere añadir a otro vehículo? (0-No/1-Si): ";
+                cin >> opcion;
+                if(opcion == 0){
+                    vehiculoNuevo=false;
+                }
+            }
+        }
     }
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
@@ -224,7 +405,7 @@ void menuAlumnos(Talumno alumnos[],int &nAlumnos){
                     break;
                 }
                 case 3 :{
-                    //Implementar modificación de datos
+                    modificarAlumno(alumnos,nAlumnos);
                     break;
                 }
                 case 0:{ //Sale del apartado de alumnos
@@ -236,7 +417,7 @@ void menuAlumnos(Talumno alumnos[],int &nAlumnos){
     }while(true);
 }
 
-void menuVehiculos(){
+void menuVehiculos(Tvehiculo vehiculos[], int &nVehiculos){
     int opcion;
 
     do{
@@ -263,7 +444,7 @@ void menuVehiculos(){
 
     switch(opcion){
         case 1:{
-            //Implementar alta de vehiculos
+            altaVehiculo(vehiculos, nVehiculos);
             clear;
             break;
         }
@@ -327,7 +508,7 @@ int menu(){
     cout << "1 - " << setw(5) << "Gestionar alumnos" << endl;
     cout << "2 - " << setw(5) << "Gestionar vehiculos" << endl;
     cout << "3 - " << setw(5) << "Dar de alta una clase" << endl;
-    cout << "4 - " << setw(5) << "Mostrar listas(Enter para salir)" << endl;
+    cout << "4 - " << setw(5) << "Mostrar listas" << endl;
     cout << "0 - " << setw(5) << "Salir" << endl;
     cout << "--------------------------------------------" << endl;
     cout << "Introduzca una opción: ";
@@ -366,7 +547,7 @@ int main(){
                 break;
             }
             case 2:{
-                menuVehiculos();
+                menuVehiculos(vehiculos, nVehiculos);
                 break;
             }
             case 3:{
