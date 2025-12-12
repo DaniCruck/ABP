@@ -378,51 +378,64 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
 
 void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     string auxMatricula,opcion;
+    bool encontrado=false;
     clear;
     header();
     cin.ignore();
-    cout<<"Introduce la matricula del vehiculo a dar de baja:";
-    getline(cin,auxMatricula);
-    clear;
-    sleep(0.5);
-    for(int i=0;i<nVehiculos;i++){
-        if(auxMatricula==vehiculos[i].matricula){
-            cout<<"Información del vehciulo a dar de baja:"<<endl;
-            cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-            cout<<"Marca:"<<vehiculos[i].marca<<endl;
-            cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-            cout<<"Tipo de vehiculo:";
-            switch(vehiculos[i].tipoVehiculo){
-                case 0:
-                    cout<<" Coche"<<endl;
-                    break;
-                case 1:
-                    cout<<" Moto"<<endl;
-                    break;
-                case 2:
-                    cout<<" Camión"<<endl;
-                    break;
-            }
-            cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-            cout<<"Estado:"<<vehiculos[i].estado<<endl;
+    if(nVehiculos==0){
+        cout<<"No hay vehículos registrados en el sistema."<<endl;
+        sleep(1.5);
+    }else{
+        cout<<"Introduce la matricula del vehiculo a dar de baja:";
+        getline(cin,auxMatricula);
+        clear;
+        sleep(0.5);
+        for(int i=0;i<nVehiculos;i++){
+            if(auxMatricula==vehiculos[i].matricula){
+                header();
+                encontrado=true;
+                cout<<"Información del vehciulo a dar de baja"<<endl;
+                cout << "-------------------------------------------------" << endl;
+                cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+                cout<<"Marca:"<<vehiculos[i].marca<<endl;
+                cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+                cout<<"Tipo de vehiculo:";
+                switch(vehiculos[i].tipoVehiculo){
+                    case 0:
+                        cout<<" Coche"<<endl;
+                        break;
+                    case 1:
+                        cout<<" Moto"<<endl;
+                        break;
+                    case 2:
+                        cout<<" Camión"<<endl;
+                        break;
+                }
+                cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+                cout<<"Estado:"<<vehiculos[i].estado<<endl;
 
-            sleep(0.5);
-            cout<<"¿Estás seguro de que quieres dar de baja a este vehiculo(0-No/1-Si)?";
-            getline(cin,opcion);
-            //Solo se acepta si para evitar eliminaciones sin querer
-            if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
-                for(int j=i;j<nVehiculos-1;j++){
-                    vehiculos[j]=vehiculos[j+1];
-                }        
-                nVehiculos--;
-                cout<<"Vehiculo eliminado con éxito."<<endl;
-                sleep(1.5);
-            }else{
-                i=nVehiculos;
+                sleep(0.5);
+                cout<<"¿Estás seguro de que quieres dar de baja a este vehiculo(0-No/1-Si)?";
+                getline(cin,opcion);
+                //Solo se acepta si para evitar eliminaciones sin querer
+                if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                    for(int j=i;j<nVehiculos-1;j++){
+                        vehiculos[j]=vehiculos[j+1];
+                    }        
+                    nVehiculos--;
+                    cout<<"Vehiculo eliminado con éxito."<<endl;
+                    sleep(1.5);
+                }
             }
         }
+        if(encontrado==false){
+            header();
+            cout<<"Ningun vehículo tiene esa matricula."<<endl;
+            sleep(1.5);
+        }
+        clear;
     }
-    clear;
+    
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
