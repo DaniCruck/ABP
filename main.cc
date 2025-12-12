@@ -299,10 +299,9 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
 
 void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     string auxMatricula, tipo;
-    int opcion;
+    string opcion;
     clear;
     header();
-
     if(nVehiculos >= vehiculosMax){
         cout << "NO SE PUEDEN REGISTRAR MÁS VEHÍCULOS" << endl;
         sleep(0.5);
@@ -313,7 +312,6 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
         cin.ignore();
         bool vehiculoNuevo=true;
         while(vehiculoNuevo==true){ 
-            
             cout << "Introduzca la matrícula del vehículo (Formato: 1234ABC): ";
             getline(cin, auxMatricula);
 
@@ -356,17 +354,69 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                 sleep(0.5);
 
                 nVehiculos++;
-
+                cin.ignore();
                 clear;
                 header();
                 cout << "Quiere añadir a otro vehículo? (0-No/1-Si): ";
-                cin >> opcion;
-                if(opcion == 0){
+                getline(cin,opcion);
+                if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                    clear;
+                    header();
+                }else{
                     vehiculoNuevo=false;
                 }
             }
         }
     }
+}
+
+void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
+    string auxMatricula,opcion;
+    clear;
+    header();
+    cin.ignore();
+    cout<<"Introduce la matricula del vehiculo a dar de baja:";
+    getline(cin,auxMatricula);
+    clear;
+    sleep(0.5);
+    for(int i=0;i<nVehiculos;i++){
+        if(auxMatricula==vehiculos[i].matricula){
+            cout<<"Información del vehciulo a dar de baja:"<<endl;
+            cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+            cout<<"Marca:"<<vehiculos[i].marca<<endl;
+            cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+            cout<<"Tipo de vehiculo:";
+            switch(vehiculos[i].tipoVehiculo){
+                case 0:
+                    cout<<" Coche"<<endl;
+                    break;
+                case 1:
+                    cout<<" Moto"<<endl;
+                    break;
+                case 2:
+                    cout<<" Camión"<<endl;
+                    break;
+            }
+            cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+            cout<<"Estado:"<<vehiculos[i].estado<<endl;
+
+            sleep(0.5);
+            cout<<"¿Estás seguro de que quieres dar de baja a este vehiculo(0-No/1-Si)?";
+            getline(cin,opcion);
+            //Solo se acepta si para evitar eliminaciones sin querer
+            if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                for(int j=i;j<nVehiculos-1;j++){
+                    vehiculos[j]=vehiculos[j+1];
+                }        
+                nVehiculos--;
+                cout<<"Vehiculo eliminado con éxito."<<endl;
+                sleep(1.5);
+            }else{
+                i=nVehiculos;
+            }
+        }
+    }
+    clear;
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
@@ -419,51 +469,52 @@ void menuAlumnos(Talumno alumnos[],int &nAlumnos){
 
 void menuVehiculos(Tvehiculo vehiculos[], int &nVehiculos){
     int opcion;
-
     do{
-        clear;
-
-        header();
-        cout << "1 - " << setw(5) << "Dar de alta a un vahiculo nuevo" << endl;
-        cout << "2 - " << setw(5) << "Dar de baja a un vehiculo" << endl;
-        cout << "3 - " << setw(5) << "Modificar datos de un vehiculo" << endl;
-        cout << "0 - " << setw(5) << "Salir" << endl;
-        cout << "--------------------------------------------" << endl;
-        cout << "Introduzca una opción: ";
-
-        cin >> opcion;
-
-        if((opcion < 0) || (opcion > 3)){
-            cout << "RANGO INVALIDO" << endl;
-            sleep(1);
-            cout << "INTENTE DE NUEVO" << endl;
-            sleep(1);
-        }
-
-    }while((opcion < 0) || (opcion > 3));
-
-    switch(opcion){
-        case 1:{
-            altaVehiculo(vehiculos, nVehiculos);
+        do{
             clear;
-            break;
-        }
-        case 2:{
-            //Implementar baja de vehiculos
-            clear;
-            break;
-        }
-        case 3 :{
-            //Implementar modificación de datos
-            clear;
-            break;
 
+            header();
+            cout << "1 - " << setw(5) << "Dar de alta a un vahiculo nuevo" << endl;
+            cout << "2 - " << setw(5) << "Dar de baja a un vehiculo" << endl;
+            cout << "3 - " << setw(5) << "Modificar datos de un vehiculo" << endl;
+            cout << "0 - " << setw(5) << "Salir" << endl;
+            cout << "--------------------------------------------" << endl;
+            cout << "Introduzca una opción: ";
+
+            cin >> opcion;
+
+            if((opcion < 0) || (opcion > 3)){
+                cout << "RANGO INVALIDO" << endl;
+                sleep(1);
+                cout << "INTENTE DE NUEVO" << endl;
+                sleep(1);
+            }
+
+        }while((opcion < 0) || (opcion > 3));
+
+        switch(opcion){
+            case 1:{
+                altaVehiculo(vehiculos, nVehiculos);
+                clear;
+                break;
+            }
+            case 2:{
+                bajaVehiculo(vehiculos, nVehiculos);
+                clear;
+                break;
+            }
+            case 3 :{
+                //Implementar modificación de datos
+                clear;
+                break;
+
+            }
+            default:{ //Sale del apartado de vehiculos
+                clear;
+                break;
+            }
         }
-        default:{ //Sale del apartado de vehiculos
-            clear;
-            break;
-        }
-    }
+    }while(true && opcion!=0);
 }
 
 void menuListas(Talumno alumnos[], int nAlumnos){
