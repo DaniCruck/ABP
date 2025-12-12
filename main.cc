@@ -1,4 +1,7 @@
-//Hecho por Daniel Valeriev Iliev Arkhipov, Carlos Hernández Fernández, y Sergio Paya Romero
+//Hecho por Daniel Valeriev Iliev Arkhipov 
+//Carlos Hernández Fernández
+//Sergio Paya Romero
+
 #include <iostream>
 #include <iomanip>
 #include <unistd.h>
@@ -436,6 +439,46 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     
 }
 
+void mostrarMAtricula(Tvehiculo vehiculos[], int nVehiculos){
+    string busqueda;
+    clear;
+    cin.ignore();
+    header();
+
+    cout << "Introduzca la matricula del vehiculo/s a buscar: ";
+    cin >> busqueda;
+    bool encontrado = false;
+    cout << "\n--- RESULTADOS DE BÚSQUEDA ---" << endl;
+    for(int i = 0; i < nVehiculos; i++) {
+        // La función .find() devuelve string::npos si NO encuentra la coincidencia.
+        // Si es diferente de npos, significa que SÍ lo encontró.
+        if (vehiculos[i].matricula.find(busqueda) != string::npos) {
+            cout << "-------------------------------------------------" << endl;
+            cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+            cout<<"Marca:"<<vehiculos[i].marca<<endl;
+            cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+            cout<<"Tipo de vehiculo:";
+            switch(vehiculos[i].tipoVehiculo){
+                case 0:
+                    cout<<" Coche"<<endl;
+                    break;
+                case 1:
+                    cout<<" Moto"<<endl;
+                    break;
+                case 2:
+                    cout<<" Camión"<<endl;
+                    break;
+            }
+            cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+            cout<<"Estado:"<<vehiculos[i].estado<<endl;
+            encontrado = true;
+        }
+    }
+    if(!encontrado) {
+        cout << "No se encontraron vehículos con esas letras" << endl;
+    }
+}
+
 void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
     int opcion;
     clear;
@@ -523,21 +566,8 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                 }
                 break;
                 case 4:
-                    string letras;
-                    cout<<"Introduce las letras de la matricula que desea buscar: "<<endl;
-                    getline(cin, letras);
-                    for(int i=0; i<nVehiculos;i++){
-                        for(int j=4; j<7; j++){
-                            for(int k=0; k<letras.length();k++){
-                                if(letras.length()<1 || letras.length()>3){
-                                    cout<<"Error..."<<endl;
-                                    k=letras.length();
-                                    j=7;
-                                    i=nVehiculos;
-                                }
-                            }
-                        }
-                    }
+                    mostrarMAtricula(vehiculos, nVehiculos);
+                    break;
 
         }
         cin.ignore();
@@ -547,6 +577,25 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
          clear;
     }
 }
+
+void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
+    int opcion;
+
+    mostrarMAtricula(vehiculos, nVehiculos);
+    cout << "--------------------------" << endl;
+    cout << "1 - Matricula" << endl;
+    cout << "2 - Marca" << endl;
+    cout << "3 - Modelo" << endl;
+    cout << "4 - Kilometraje" << endl;
+    cout << "5 - Estado" << endl;
+    cout << "0 - Salir" << endl;
+    cout << "--------------------------" << endl;
+    cout << "Que datos desea modificar?: ";
+    cin >> opcion;
+
+
+}
+
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
 
