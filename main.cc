@@ -434,6 +434,101 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     }
     
 }
+
+void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
+    int opcion;
+    clear;
+    cin.ignore();
+    header();
+    if(nVehiculos<1){
+        cout<<"No hay vehiculos registrados en el sistema."<<endl;
+        sleep(1.5);
+        clear;
+    }else{
+        cout<<"1- Mostrar todos los vehiculos"<<endl;
+        cout<<"2- Mostrar los vehículos disponibles"<<endl;
+        cout<<"3- Mostrar los vehículos en mantenimiento"<<endl;
+        cout<<"4- Mostrar los vehículos ordenados por letras de matricula"<<endl;
+        cin>> opcion;
+        switch(opcion){
+            case 1:
+                for(int i=0;i<nVehiculos;i++){
+                    cout << "-------------------------------------------------" << endl;
+                    cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+                    cout<<"Marca:"<<vehiculos[i].marca<<endl;
+                    cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+                    cout<<"Tipo de vehiculo:";
+                    switch(vehiculos[i].tipoVehiculo){
+                        case 0:
+                            cout<<" Coche"<<endl;
+                            break;
+                        case 1:
+                            cout<<" Moto"<<endl;
+                            break;
+                        case 2:
+                            cout<<" Camión"<<endl;
+                            break;
+                    }
+                    cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+                    cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                    
+                }
+                break;
+            case 2:
+                for(int i =0; i<nVehiculos; i++){
+                    if(vehiculos[i].estado==1){
+                        cout << "-------------------------------------------------" << endl;
+                        cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+                        cout<<"Marca:"<<vehiculos[i].marca<<endl;
+                        cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+                        cout<<"Tipo de vehiculo:";
+                        switch(vehiculos[i].tipoVehiculo){
+                            case 0:
+                                cout<<" Coche"<<endl;
+                                break;
+                            case 1:
+                                cout<<" Moto"<<endl;
+                                break;
+                            case 2:
+                                cout<<" Camión"<<endl;
+                                break;
+                        }
+                        cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+                        cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                    }
+                }break;
+                case 3:
+                for(int i =0; i<nVehiculos; i++){
+                    if(vehiculos[i].estado==0){
+                        cout << "-------------------------------------------------" << endl;
+                        cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+                        cout<<"Marca:"<<vehiculos[i].marca<<endl;
+                        cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+                        cout<<"Tipo de vehiculo:";
+                        switch(vehiculos[i].tipoVehiculo){
+                            case 0:
+                                cout<<" Coche"<<endl;
+                                break;
+                            case 1:
+                                cout<<" Moto"<<endl;
+                                break;
+                            case 2:
+                                cout<<" Camión"<<endl;
+                                break;
+                        }
+                        cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+                        cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                    }
+                }
+                break;
+        }
+        cin.ignore();
+        cout<<"Pulsa enter para salir.";
+         //El programa no avanza hasta que el usuario pulse enter
+         cin.get();
+         clear;
+    }
+}
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -533,7 +628,7 @@ void menuVehiculos(Tvehiculo vehiculos[], int &nVehiculos){
     }while(true && opcion!=0);
 }
 
-void menuListas(Talumno alumnos[], int nAlumnos){
+void menuListas(Talumno alumnos[], int nAlumnos , Tvehiculo vehiculos[], int nVehiculos){
     int opcion;
 
     clear;
@@ -559,6 +654,9 @@ void menuListas(Talumno alumnos[], int nAlumnos){
                 switch(opcion){
                     case 1:
                         mostrarAlumnos(alumnos, nAlumnos);
+                        break;
+                    case 2: 
+                        mostrarVehiculos(vehiculos, nVehiculos);
                         break;
                 }
             }
@@ -622,7 +720,7 @@ int main(){
                 break;
             }
             case 4:{
-                menuListas(alumnos, nAlumnos);
+                menuListas(alumnos, nAlumnos,vehiculos, nVehiculos);
                 break;
             }
         }
