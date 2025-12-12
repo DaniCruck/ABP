@@ -198,100 +198,106 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
     Talumno auxAlumno;
     bool letraCorrecta, encontrado;
     char confirmacion, repetir;
-
+    int i;
     clear;
     header();
     cin.ignore();
+    if(nAlumnos<1){
+        cout<<"No hay alumnos registrados en el sistema."<<endl;
+        sleep(1.5);
+        clear;
+        i=nAlumnos; //Para salir del bucle si no hay alumnos
+    }else{
+        cout<<"Introduce el DNI del alumno a modificar: ";
+        getline(cin,auxAlumno.dni);
+        for(int i = 0; i < nAlumnos; i++){
+            if(auxAlumno.dni == alumnos[i].dni){
+                do{
+                    clear;
+                    header();
+                    cout << "Datos actuales del alumno:" << endl;
+                    cout << "--------------------------" << endl;
+                    cout << "DNI: " << alumnos[i].dni << endl;
+                    cout << "Nombre: " << alumnos[i].nombres << endl;
+                    cout << "Apellidos: " << alumnos[i].apellidos << endl;
+                    cout << "Número de teléfono: " << alumnos[i].numeroTelefono << endl;
+                    cout << "--------------------------" << endl;
 
-    cout<<"Introduce el DNI del alumno a modificar: ";
-    getline(cin,auxAlumno.dni);
-    for(int i = 0; i < nAlumnos; i++){
-        if(auxAlumno.dni == alumnos[i].dni){
-            do{
-                clear;
-                header();
-                cout << "Datos actuales del alumno:" << endl;
-                cout << "--------------------------" << endl;
-                cout << "DNI: " << alumnos[i].dni << endl;
-                cout << "Nombre: " << alumnos[i].nombres << endl;
-                cout << "Apellidos: " << alumnos[i].apellidos << endl;
-                cout << "Número de teléfono: " << alumnos[i].numeroTelefono << endl;
-                cout << "--------------------------" << endl;
+                    cout << "Que dato desea modificar?" << endl;
+                    cout << "1 - Nombre" << endl;
+                    cout << "2 - Apellidos" << endl;
+                    cout << "3 - Número de teléfono" << endl;
+                    cout << "0 - Salir" << endl;
+                    cin >> opcion;
 
-                cout << "Que dato desea modificar?" << endl;
-                cout << "1 - Nombre" << endl;
-                cout << "2 - Apellidos" << endl;
-                cout << "3 - Número de teléfono" << endl;
-                cout << "0 - Salir" << endl;
-                cin >> opcion;
+                    switch(opcion){
+                        case '1':
+                            cin.ignore();
+                            cout<<"Introduce el nuevo nombre completo (SIN APELLIDOS): ";
+                            getline(cin,auxAlumno.nombres);
+                            cout << "Seguro que es el dato correcto? (s/n): ";
 
-                switch(opcion){
-                    case '1':
-                        cin.ignore();
-                        cout<<"Introduce el nuevo nombre completo (SIN APELLIDOS): ";
-                        getline(cin,auxAlumno.nombres);
-                        cout << "Seguro que es el dato correcto? (s/n): ";
+                            cin >> confirmacion;
+                            if(confirmacion == 's' || confirmacion == 'S'){
+                                alumnos[i].nombres = auxAlumno.nombres;
+                                cout<<"Nombre modificado con éxito."<<endl;
+                            }
+                            sleep(1);
+                            
+                            cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                            cin >> repetir;
+                            
+                            break;
 
-                        cin >> confirmacion;
-                        if(confirmacion == 's' || confirmacion == 'S'){
-                            alumnos[i].nombres = auxAlumno.nombres;
-                            cout<<"Nombre modificado con éxito."<<endl;
-                        }
-                        sleep(1);
-                        
-                        cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
-                        cin >> repetir;
-                        
-                        break;
+                        case '2':
+                            cin.ignore();
+                            cout<<"Introduce los nuevos apellidos: ";
+                            getline(cin,auxAlumno.apellidos);
+                            cout << "Seguro que es el dato correcto? (s/n): ";
 
-                    case '2':
-                        cin.ignore();
-                        cout<<"Introduce los nuevos apellidos: ";
-                        getline(cin,auxAlumno.apellidos);
-                        cout << "Seguro que es el dato correcto? (s/n): ";
+                            cin >> confirmacion;
+                            if(confirmacion == 's' || confirmacion == 'S'){
+                                alumnos[i].apellidos = auxAlumno.apellidos;
+                                cout<<"Apellidos modificados con éxito."<<endl;
+                            }
+                            sleep(1);
+                            
+                            cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                            cin >> repetir;
+                            
+                            break;
 
-                        cin >> confirmacion;
-                        if(confirmacion == 's' || confirmacion == 'S'){
-                            alumnos[i].apellidos = auxAlumno.apellidos;
-                            cout<<"Apellidos modificados con éxito."<<endl;
-                        }
-                        sleep(1);
-                        
-                        cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
-                        cin >> repetir;
-                        
-                        break;
+                        case '3':
+                            cin.ignore();
+                            cout<<"Introduce el nuevo número de teléfono: ";
+                            getline(cin,auxAlumno.numeroTelefono);
 
-                    case '3':
-                        cin.ignore();
-                        cout<<"Introduce el nuevo número de teléfono: ";
-                        getline(cin,auxAlumno.numeroTelefono);
+                            cout << "Seguro que es el dato correcto? (s/n): ";
 
-                        cout << "Seguro que es el dato correcto? (s/n): ";
+                            cin >> confirmacion;
+                            if(confirmacion == 's' || confirmacion == 'S'){
+                                alumnos[i].numeroTelefono = auxAlumno.numeroTelefono;
+                                cout<<"Número de teléfono modificado con éxito."<<endl;
+                            }
+                            sleep(1);
+                            
+                            cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                            cin >> repetir;
+                            
+                            break;
 
-                        cin >> confirmacion;
-                        if(confirmacion == 's' || confirmacion == 'S'){
-                            alumnos[i].numeroTelefono = auxAlumno.numeroTelefono;
-                            cout<<"Número de teléfono modificado con éxito."<<endl;
-                        }
-                        sleep(1);
-                        
-                        cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
-                        cin >> repetir;
-                        
-                        break;
+                        case '0':
+                            cout<<"Saliendo del menú de modificación."<<endl;
+                            sleep(1);
 
-                    case '0':
-                        cout<<"Saliendo del menú de modificación."<<endl;
-                        sleep(1);
+                            repetir = 'n';
 
-                        repetir = 'n';
-
-                        break;
-                }
-                
-            }while(repetir == 's' || repetir == 'S');
-            i = nAlumnos; //Para salir del bucle una vez encontrado el alumno
+                            break;
+                    }
+                    
+                }while(repetir == 's' || repetir == 'S');
+                i = nAlumnos; //Para salir del bucle una vez encontrado el alumno
+            }
         }
     }
 
