@@ -196,9 +196,7 @@ void mostrarAlumnos(Talumno alumnos[], int nAlumnos){
 void modificarAlumno(Talumno alumnos[], int nAlumnos){
     char  opcion;
     Talumno auxAlumno;
-    bool letraCorrecta, encontrado;
     char confirmacion, repetir;
-    int i;
     clear;
     header();
     cin.ignore();
@@ -206,7 +204,6 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
         cout<<"No hay alumnos registrados en el sistema."<<endl;
         sleep(1.5);
         clear;
-        i=nAlumnos; //Para salir del bucle si no hay alumnos
     }else{
         cout<<"Introduce el DNI del alumno a modificar: ";
         getline(cin,auxAlumno.dni);
