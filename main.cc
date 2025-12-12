@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <unistd.h>
 #include <cstring>
+#include <cctype>
 
 #define clear system("clear");
 
@@ -521,6 +522,23 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                     }
                 }
                 break;
+                case 4:
+                    string letras;
+                    cout<<"Introduce las letras de la matricula que desea buscar: "<<endl;
+                    getline(cin, letras);
+                    for(int i=0; i<nVehiculos;i++){
+                        for(int j=4; j<7; j++){
+                            for(int k=0; k<letras.length();k++){
+                                if(letras.length()<1 || letras.length()>3){
+                                    cout<<"Error..."<<endl;
+                                    k=letras.length();
+                                    j=7;
+                                    i=nVehiculos;
+                                }
+                            }
+                        }
+                    }
+
         }
         cin.ignore();
         cout<<"Pulsa enter para salir.";
