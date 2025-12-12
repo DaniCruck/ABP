@@ -8,7 +8,7 @@
 
 using namespace std;
 
-const int alumnosMax = 100, vehiculosMax = 20, practicasMax = 100;
+const int ALUMNOSMAX = 100, VEHICULOSMAX = 20, PRACTICASMAX = 100;
 
 //Registros----------------------------------------------------------------------------------------------------------------------------------------------------
 struct Tvehiculo {
@@ -62,7 +62,7 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
     clear;
     header();
 
-    if(nAlumnos >= alumnosMax){
+    if(nAlumnos >= ALUMNOSMAX){
         cout << "NO SE PUEDEN REGISTRAR MÁS ALUMNOS" << endl;
         sleep(0.5);
         cout << "DEBE DAR DE BAJA A UN ALUMNO PARA AÑADIR A UNO NUEVO" << endl;
@@ -305,7 +305,7 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     string opcion;
     clear;
     header();
-    if(nVehiculos >= vehiculosMax){
+    if(nVehiculos >= VEHICULOSMAX){
         cout << "NO SE PUEDEN REGISTRAR MÁS VEHÍCULOS" << endl;
         sleep(0.5);
         cout << "DEBE DAR DE BAJA A UN VEHÍCULO PARA AÑADIR A UNO NUEVO" << endl;
@@ -598,9 +598,9 @@ int menu(){
 //Función main------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
     //Listas de los distintos objetos
-    Talumno alumnos[alumnosMax];
-    Tvehiculo vehiculos[vehiculosMax];
-    Tpractica practicas[practicasMax];
+    Talumno alumnos[ALUMNOSMAX];
+    Tvehiculo vehiculos[VEHICULOSMAX];
+    Tpractica practicas[PRACTICASMAX];
 
     int opcion, nAlumnos = 0, nVehiculos=0, nClases=0;
 
