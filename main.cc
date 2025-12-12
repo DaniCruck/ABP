@@ -1,4 +1,4 @@
-//Hecho por DañaCrack, Carlitos, y Sergio Paya
+//Hecho por Daniel Valeriev Iliev Arkhipov, Carlos Hernández Fernández, y Sergio Paya Romero
 #include <iostream>
 #include <iomanip>
 #include <unistd.h>
