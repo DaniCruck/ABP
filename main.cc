@@ -1,6 +1,6 @@
 //Hecho por Daniel Valeriev Iliev Arkhipov 
 //Carlos Hernández Fernández
-//Sergio Paya Romero
+//Sergio Payá Romero
 
 #include <iostream>
 #include <iomanip>
@@ -580,18 +580,147 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
 
 void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     int opcion;
-
-    mostrarMAtricula(vehiculos, nVehiculos);
-    cout << "--------------------------" << endl;
-    cout << "1 - Matricula" << endl;
-    cout << "2 - Marca" << endl;
-    cout << "3 - Modelo" << endl;
-    cout << "4 - Kilometraje" << endl;
-    cout << "5 - Estado" << endl;
-    cout << "0 - Salir" << endl;
-    cout << "--------------------------" << endl;
-    cout << "Que datos desea modificar?: ";
-    cin >> opcion;
+    string busqueda;
+    char repetir;
+    char confirmar;
+    clear;
+    cin.ignore();
+    header();
+    if(nVehiculos == 0){
+        cout<<"No hay vehículos registrados en el programa "<<endl;
+        sleep(1);
+        clear;
+    }else{
+        cout << "Introduzca la matricula del vehiculo/s a buscar: ";
+        cin >> busqueda;
+        bool encontrado = false;
+        clear;
+        for(int i = 0; i < nVehiculos; i++) {
+            if (vehiculos[i].matricula == busqueda) {
+                do{
+                    header();
+                    cout << "--- RESULTADOS DE BÚSQUEDA ---" << endl;
+                    cout << "-------------------------------------------------" << endl;
+                    cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
+                    cout<<"Marca:"<<vehiculos[i].marca<<endl;
+                    cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
+                    cout<<"Tipo de vehiculo:";
+                    switch(vehiculos[i].tipoVehiculo){
+                        case 0:
+                            cout<<" Coche"<<endl;
+                            break;
+                        case 1:
+                            cout<<" Moto"<<endl;
+                            break;
+                        case 2:
+                            cout<<" Camión"<<endl;
+                            break;
+                    }
+                    cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
+                    cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                    encontrado = true;
+                    cout << "--------------------------" << endl;
+                    cout << "1 - Matricula" << endl;
+                    cout << "2 - Marca" << endl;
+                    cout << "3 - Modelo" << endl;
+                    cout << "4 - Kilometraje" << endl;
+                    cout << "5 - Estado" << endl;
+                    cout << "0 - Salir" << endl;
+                    cout << "--------------------------" << endl;
+                    cout << "Que datos desea modificar?: ";
+                    cin >> opcion;
+                    switch(opcion){
+                        case 0:
+                            cout<<"Saliendo del menú..."<<endl;
+                            repetir = 'n';
+                            clear;
+                            break;
+                        case 1:
+                            cout<<"Introduzca la matricula nueva del vehículo: ";
+                            cin>>vehiculos[i].matricula;
+                            cout<<"¿Seguro que desea modificar la matricula? (S / N)"<<endl;
+                            cin>>confirmar;
+                            if(confirmar == 'S' || confirmar=='s'){
+                                cout<<"La modificación se ha realizado con éxito."<<endl;
+                                cout<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cin>>repetir;
+                            }
+                            sleep(0.5);
+                            clear;
+                            break;
+                        case 2:
+                            cout<<"Introduzca la marca nueva del vehículo: ";
+                            cin>>vehiculos[i].marca;
+                            cout<<"¿Seguro que desea modificar la marca? (S / N)"<<endl;
+                            cin>>confirmar;
+                            if(confirmar == 'S' || confirmar=='s'){
+                                cout<<"La modificación se ha realizado con éxito."<<endl;
+                                cout<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cin>>repetir;
+                            }
+                            sleep(0.5);
+                            clear;
+                            break;
+                        case 3:
+                            cout<<"Introduzca el nuevo modelo del vehículo: ";
+                            cin>>vehiculos[i].modelo;
+                            cout<<"¿Seguro que desea modificar el modelo del vehículo? (S / N)"<<endl;
+                            cin>>confirmar;
+                            if(confirmar == 'S' || confirmar=='s'){
+                                cout<<"La modificación se ha realizado con éxito."<<endl;
+                                cout<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cin>>repetir;
+                            }
+                            sleep(0.5);
+                            clear;
+                            break;
+                        case 4:
+                            cout<<"Introduzca el kilometraje nuevo del vehículo: ";
+                            cin>>vehiculos[i].kilometraje;
+                            cout<<"¿Seguro que desea modificar el kilometraje del vehículo? (S / N)"<<endl;
+                            cin>>confirmar;
+                            if(confirmar == 'S' || confirmar=='s'){
+                                cout<<"La modificación se ha realizado con éxito."<<endl;
+                                cout<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cin>>repetir;
+                            }
+                            sleep(0.5);
+                            clear;
+                            break;
+                        case 5:
+                            do{
+                                cout<<"Introduzca el estado nuevo del vehículo (0 - Mantenimiento, 1 - Disponible): ";
+                                cin>>vehiculos[i].estado;
+                                if(vehiculos[i].estado<0 || vehiculos[i].estado>1){
+                                    cout<<"Valor fuera del rango, vuelve a introducirlo"<<endl;
+                                }
+                            }while(vehiculos[i].estado<0 || vehiculos[i].estado>1);
+                            cout<<"¿Seguro que desea modificar el estado? (S / N)"<<endl;
+                            cin>>confirmar;
+                            if(confirmar == 'S' || confirmar=='s'){
+                                cout<<"La modificación se ha realizado con éxito."<<endl;
+                                cout<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cin>>repetir;
+                            }
+                            sleep(0.5);
+                            clear;
+                            break;
+                    }
+                }while(repetir == 'S' || repetir == 's');
+            }if(!encontrado) {
+            cout << "No se encontraron vehículos con esas letras" << endl;
+            }
+            i=nVehiculos;
+        }
+    }
+    
+    
+    
 
 
 }
@@ -682,7 +811,7 @@ void menuVehiculos(Tvehiculo vehiculos[], int &nVehiculos){
                 break;
             }
             case 3 :{
-                //Implementar modificación de datos
+                modificarVehiculo(vehiculos, nVehiculos );
                 clear;
                 break;
 
