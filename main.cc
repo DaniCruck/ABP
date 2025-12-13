@@ -321,57 +321,63 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
         while(vehiculoNuevo==true){ 
             cout << "Introduzca la matrícula del vehículo (Formato: 1234ABC): ";
             getline(cin, auxMatricula);
-
-            bool existe = false; 
-            for(int p = 0; p < nVehiculos; p++){
-                if(auxMatricula == vehiculos[p].matricula){
-                    existe = true;
-                    p = nVehiculos;
+            if(auxMatricula.length()==7){
+                bool existe = false; 
+                for(int p = 0; p < nVehiculos; p++){
+                    if(auxMatricula == vehiculos[p].matricula){
+                        existe = true;
+                        p = nVehiculos;
+                    }
                 }
-            }
-            if(existe == true){
-                cout << "ESTA MATRÍCULA YA ESTÁ REGISTRADA" << endl;
-                sleep(0.5);
-                cout << "PRUEBE DE NUEVO" << endl;
-                sleep(1);
-            }
-            else{
-                int i = nVehiculos; 
+                if(existe == true){
+                    cout << "ESTA MATRÍCULA YA ESTÁ REGISTRADA" << endl;
+                    sleep(0.5);
+                    cout << "PRUEBE DE NUEVO" << endl;
+                    sleep(1);
+                }
+                else{
+                    int i = nVehiculos; 
 
-                vehiculos[i].matricula = auxMatricula;
-                
-                cout << "INTRODUZCA LA MARCA DEL VEHÍCULO: ";
-                getline(cin, vehiculos[i].marca);
-                sleep(0.5);
+                    vehiculos[i].matricula = auxMatricula;
+                    
+                    cout << "INTRODUZCA LA MARCA DEL VEHÍCULO: ";
+                    getline(cin, vehiculos[i].marca);
+                    sleep(0.5);
 
-                cout << "INTRODUZCA EL MODELO DEL VEHÍCULO: ";
-                getline(cin, vehiculos[i].modelo);
-                sleep(0.5);
+                    cout << "INTRODUZCA EL MODELO DEL VEHÍCULO: ";
+                    getline(cin, vehiculos[i].modelo);
+                    sleep(0.5);
 
-                cout << "INTRODUZCA EL TIPO DE VEHÍCULO (0-Coche/1-Moto/2-Camión): ";
-                cin >> vehiculos[i].tipoVehiculo;
-                sleep(0.5);
+                    cout << "INTRODUZCA EL TIPO DE VEHÍCULO (0-Coche/1-Moto/2-Camión): ";
+                    cin >> vehiculos[i].tipoVehiculo;
+                    sleep(0.5);
 
-                cout << "INTRODUZCA EL KILOMETRAJE DEL VEHÍCULO: ";
-                cin >> vehiculos[i].kilometraje;
-                sleep(0.5);
+                    cout << "INTRODUZCA EL KILOMETRAJE DEL VEHÍCULO: ";
+                    cin >> vehiculos[i].kilometraje;
+                    sleep(0.5);
 
-                cout << "INTRODUZCA EL ESTADO DEL VEHÍCULO (0-Mantenimiento/1-Disponible): ";
-                cin >> vehiculos[i].estado;
-                sleep(0.5);
+                    cout << "INTRODUZCA EL ESTADO DEL VEHÍCULO (0-Mantenimiento/1-Disponible): ";
+                    cin >> vehiculos[i].estado;
+                    sleep(0.5);
 
-                nVehiculos++;
-                cin.ignore();
-                clear;
-                header();
-                cout << "Quiere añadir a otro vehículo? (0-No/1-Si): ";
-                getline(cin,opcion);
-                if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                    nVehiculos++;
+                    cin.ignore();
                     clear;
                     header();
-                }else{
-                    vehiculoNuevo=false;
+                    cout << "Quiere añadir a otro vehículo? (0-No/1-Si): ";
+                    getline(cin,opcion);
+                    if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
+                        clear;
+                        header();
+                    }else{
+                        vehiculoNuevo=false;
+                    }
                 }
+            }else{
+                clear;
+                cout<<"La matricula no cumple el formato pedido. Intente de nuevo."<<endl;
+                sleep(1.5);
+                clear;
             }
         }
     }
@@ -413,8 +419,12 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                         break;
                 }
                 cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                cout<<"Estado:"<<vehiculos[i].estado<<endl;
-
+                cout<<"Estado:";
+                if(vehiculos[i].estado==0){
+                    cout<<"En mantenimiento"<<endl;
+                }else{
+                    cout<<"Disponible"<<endl;
+                }
                 sleep(0.5);
                 cout<<"¿Estás seguro de que quieres dar de baja a este vehiculo(0-No/1-Si)?";
                 getline(cin,opcion);
@@ -448,12 +458,13 @@ void mostrarMAtricula(Tvehiculo vehiculos[], int nVehiculos){
     cout << "Introduzca la matricula del vehiculo/s a buscar: ";
     cin >> busqueda;
     bool encontrado = false;
+    clear;
     cout << "\n--- RESULTADOS DE BÚSQUEDA ---" << endl;
+    cout << "-------------------------------------------------" << endl;
     for(int i = 0; i < nVehiculos; i++) {
         // La función .find() devuelve string::npos si NO encuentra la coincidencia.
         // Si es diferente de npos, significa que SÍ lo encontró.
         if (vehiculos[i].matricula.find(busqueda) != string::npos) {
-            cout << "-------------------------------------------------" << endl;
             cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
             cout<<"Marca:"<<vehiculos[i].marca<<endl;
             cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
@@ -470,7 +481,13 @@ void mostrarMAtricula(Tvehiculo vehiculos[], int nVehiculos){
                     break;
             }
             cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-            cout<<"Estado:"<<vehiculos[i].estado<<endl;
+            cout<<"Estado:";
+            if(vehiculos[i].estado==0){
+                cout<<"En mantenimiento"<<endl;
+            }else{
+                cout<<"Disponible"<<endl;
+            }
+            cout << "-------------------------------------------------" << endl;
             encontrado = true;
         }
     }
@@ -514,7 +531,12 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                             break;
                     }
                     cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                    cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                    cout<<"Estado:";
+                    if(vehiculos[i].estado==0){
+                        cout<<"En mantenimiento"<<endl;
+                    }else{
+                        cout<<"Disponible"<<endl;
+                    }
                     
                 }
                 break;
@@ -538,7 +560,12 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                                 break;
                         }
                         cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                        cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                        cout<<"Estado:";
+                        if(vehiculos[i].estado==0){
+                            cout<<"En mantenimiento"<<endl;
+                        }else{
+                            cout<<"Disponible"<<endl;
+                        }
                     }
                 }break;
                 case 3:
@@ -561,7 +588,12 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                                 break;
                         }
                         cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                        cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                        cout<<"Estado:";
+                        if(vehiculos[i].estado==0){
+                            cout<<"En mantenimiento"<<endl;
+                        }else{
+                            cout<<"Disponible"<<endl;
+                        }
                     }
                 }
                 break;
@@ -580,15 +612,14 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
 
 void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
     int opcion;
-    string busqueda;
-    char repetir;
-    char confirmar;
+    string busqueda, auxMatricula;
+    char repetir, confirmar;
     clear;
     cin.ignore();
     header();
     if(nVehiculos == 0){
         cout<<"No hay vehículos registrados en el programa "<<endl;
-        sleep(1);
+        sleep(1.5);
         clear;
     }else{
         cout << "Introduzca la matricula del vehiculo/s a buscar: ";
@@ -617,7 +648,12 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                             break;
                     }
                     cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                    cout<<"Estado:"<<vehiculos[i].estado<<endl;
+                    cout<<"Estado:";
+                    if(vehiculos[i].estado==0){
+                        cout<<"En mantenimiento"<<endl;
+                    }else{
+                        cout<<"Disponible"<<endl;
+                    }
                     encontrado = true;
                     cout << "--------------------------" << endl;
                     cout << "1 - Matricula" << endl;
@@ -629,6 +665,7 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                     cout << "--------------------------" << endl;
                     cout << "Que datos desea modificar?: ";
                     cin >> opcion;
+                    clear;
                     switch(opcion){
                         case 0:
                             cout<<"Saliendo del menú..."<<endl;
@@ -636,14 +673,23 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                             clear;
                             break;
                         case 1:
-                            cout<<"Introduzca la matricula nueva del vehículo: ";
-                            cin>>vehiculos[i].matricula;
+                            do{
+                                cout<<"Introduzca la matricula nueva del vehículo: ";
+                                cin>>auxMatricula;  
+                                if(auxMatricula.length()!=7){
+                                    clear;
+                                    cout<<"Formato de matricula incorrecto. Vuelva a intentarlo."<<endl;
+                                    sleep(1.5);
+                                    clear;
+                                }
+                            }while(auxMatricula.length()!=7);                        
                             cout<<"¿Seguro que desea modificar la matricula? (S / N)"<<endl;
                             cin>>confirmar;
+                            clear;
                             if(confirmar == 'S' || confirmar=='s'){
                                 cout<<"La modificación se ha realizado con éxito."<<endl;
                                 cout<<endl;
-                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/N)"<<endl;
                                 cin>>repetir;
                             }
                             sleep(0.5);
@@ -652,12 +698,12 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                         case 2:
                             cout<<"Introduzca la marca nueva del vehículo: ";
                             cin>>vehiculos[i].marca;
-                            cout<<"¿Seguro que desea modificar la marca? (S / N)"<<endl;
+                            cout<<"¿Seguro que desea modificar la marca? (S/N)"<<endl;
                             cin>>confirmar;
                             if(confirmar == 'S' || confirmar=='s'){
                                 cout<<"La modificación se ha realizado con éxito."<<endl;
                                 cout<<endl;
-                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/N)"<<endl;
                                 cin>>repetir;
                             }
                             sleep(0.5);
@@ -666,28 +712,36 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                         case 3:
                             cout<<"Introduzca el nuevo modelo del vehículo: ";
                             cin>>vehiculos[i].modelo;
-                            cout<<"¿Seguro que desea modificar el modelo del vehículo? (S / N)"<<endl;
+                            cout<<"¿Seguro que desea modificar el modelo del vehículo? (S/N)"<<endl;
                             cin>>confirmar;
                             if(confirmar == 'S' || confirmar=='s'){
                                 cout<<"La modificación se ha realizado con éxito."<<endl;
                                 cout<<endl;
-                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                cout<<"¿Desea modificar algún dato más? (S/N)"<<endl;
                                 cin>>repetir;
                             }
                             sleep(0.5);
                             clear;
                             break;
                         case 4:
-                            cout<<"Introduzca el kilometraje nuevo del vehículo: ";
-                            cin>>vehiculos[i].kilometraje;
-                            cout<<"¿Seguro que desea modificar el kilometraje del vehículo? (S / N)"<<endl;
-                            cin>>confirmar;
-                            if(confirmar == 'S' || confirmar=='s'){
-                                cout<<"La modificación se ha realizado con éxito."<<endl;
-                                cout<<endl;
-                                cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
-                                cin>>repetir;
-                            }
+                            do{
+                                cout<<"Introduzca el kilometraje nuevo del vehículo: ";
+                                cin>>vehiculos[i].kilometraje;
+                                if(vehiculos[i].kilometraje<0){
+                                    cout<<"Kilometraje no válido. Intente de nuevo."<<endl;
+                                    sleep(1.5);
+                                    clear;
+                                }else{
+                                    cout<<"¿Seguro que desea modificar el kilometraje del vehículo? (S / N)"<<endl;
+                                    cin>>confirmar;
+                                    if(confirmar == 'S' || confirmar=='s'){
+                                        cout<<"La modificación se ha realizado con éxito."<<endl;
+                                        cout<<endl;
+                                        cout<<"¿Desea modificar algún dato más? (S/n)"<<endl;
+                                        cin>>repetir;
+                                    }
+                                }
+                            }while(vehiculos[i].kilometraje<0);
                             sleep(0.5);
                             clear;
                             break;
@@ -712,18 +766,15 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                             break;
                     }
                 }while(repetir == 'S' || repetir == 's');
-            }if(!encontrado) {
-            cout << "No se encontraron vehículos con esas letras" << endl;
             }
-            i=nVehiculos;
+            }
+            if(!encontrado) {
+                header();
+                cout << "No se encontraron vehículos con esas letras" << endl;
+                sleep(1.5);
+            }
         }
     }
-    
-    
-    
-
-
-}
 
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
