@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <cctype>
+#include <string>
 
 #define clear system("clear");
 
@@ -23,7 +24,7 @@ struct Tvehiculo {
 };
 
 struct Tfecha{
-    int dia, mes, año;
+    int dia, mes, año, hora, minutos;
 };
 
 struct Tpractica{
@@ -36,7 +37,7 @@ struct Tpractica{
 struct Talumno{
     string dni;
     string nombres, apellidos, numeroTelefono;
-    Tpractica clasesRealizadas[100];
+    Tpractica clasesRealizadas[PRACTICASMAX];
     int nPracticas;
 };
 //Registros---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,14 +51,12 @@ void header(){
 
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 bool comprobarLetraDNI(string auxdni){
-    //hay que hacerlo
     bool correcto=false;
     int numDNI=stoi(auxdni);
     char letraDNI=auxdni.back();
     string letras = "TRWAGMYFPDXBNJZSQVHLCKE";
     if(letras[numDNI%23]==letraDNI) correcto=true;
     return correcto;
-
 }
 
 void altaAlumno(Talumno alumnos[], int &nAlumnos){
@@ -104,15 +103,15 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
 
                 alumnos[i].dni = auxdni;
                 
-                cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO(SIN APELLIDOS): ";
+                cout << "INTRODUZCA EL NOMBRE COMPLETO DEL ALUMNO (SIN APELLIDOS): ";
                 getline(cin, alumnos[i].nombres);
                 sleep(0.5);
 
-                cout << "INTRODUZCLA LOS APELLIDOS DEL ALUMNO: ";
+                cout << "INTRODUZCA LOS APELLIDOS DEL ALUMNO: ";
                 getline(cin, alumnos[i].apellidos);
                 sleep(0.5);
 
-                cout << "INTRODUZCA EL NUMERO DE TELEFONO(FORMATO: +XXX XXXXXXXXX): ";
+                cout << "INTRODUZCA EL NÚMERO DE TELÉFONO (FORMATO: +XXX XXXXXXXXX): ";
                 getline(cin, alumnos[i].numeroTelefono);
                 sleep(0.5);
 
@@ -121,9 +120,9 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
 
                 clear;
                 header();
-                cout << "Quiere añadir a otro alumno? (0-No/1-Si): ";
+                cout << "¿Quiere añadir a otro alumno? (0-No/1-Si): ";
                 getline(cin, opcion);
-                //hecho para que no se entre al proceso de creacion de alumno por error
+                
                 if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
                 }else{
                     alumnoNuevo=false;
@@ -140,7 +139,7 @@ void bajaAlumno(Talumno alumnos[], int &nAlumnos){
     clear;
     header();
     cin.ignore();
-    cout<<"Introduce el DNI del alumno a dar de baja:";
+    cout<<"Introduce el DNI del alumno a dar de baja: ";
     getline(cin,auxdni);
     clear;
     sleep(0.5);
@@ -148,13 +147,13 @@ void bajaAlumno(Talumno alumnos[], int &nAlumnos){
         if(auxdni==alumnos[i].dni){
             cout<<"Información del alumno a dar de baja:"<<endl;
             cout<<"Nombre: "<<alumnos[i].nombres<<" "<<alumnos[i].apellidos<<endl;
-            cout<<"DNI:"<<alumnos[i].dni<<endl;
-            cout<<"Número de telefono: "<<alumnos[i].numeroTelefono<<endl;
-            cout<<"Número de practicas hechas: "<<alumnos[i].nPracticas<<endl;
+            cout<<"DNI: "<<alumnos[i].dni<<endl;
+            cout<<"Número de teléfono: "<<alumnos[i].numeroTelefono<<endl;
+            cout<<"Número de prácticas hechas: "<<alumnos[i].nPracticas<<endl;
             sleep(0.5);
-            cout<<"¿Estás seguro de que quieres dar de baja a este alumno(0-No/1-Si)?";
+            cout<<"¿Estás seguro de que quieres dar de baja a este alumno (0-No/1-Si)? ";
             getline(cin,opcion);
-            //Solo se acepta si para evitar eliminaciones sin querer
+            
             if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
                 for(int j=i;j<nAlumnos-1;j++){
                     alumnos[j]=alumnos[j+1];
@@ -171,21 +170,34 @@ void bajaAlumno(Talumno alumnos[], int &nAlumnos){
 
 void mostrarAlumnos(Talumno alumnos[], int nAlumnos){
     clear;
-    //Limpiar el buffer para que no se salte la pausa de despues de la lista
     cin.ignore();
     if(nAlumnos>0){
         for(int i=0;i<nAlumnos;i++){
-            //Lista de alumnos
-            cout<<"Alumno nº"<<i+1<<endl;
+            header();
+            //string(18,' ') sirve para crear un string de 18 carácteres lleno de espacios, es para centrar los subtitulos
+            cout<<string(18,' ')<<"-Alumno nº"<<i+1<<"-"<<endl<<endl;
             sleep(0.5);
             cout<<"Nombre: "<<alumnos[i].nombres<<" "<<alumnos[i].apellidos<<endl;
-            cout<<"DNI:"<<alumnos[i].dni<<endl;
-            cout<<"Número de telefono: "<<alumnos[i].numeroTelefono<<endl;
-            cout<<"Número de practicas hechas: "<<alumnos[i].nPracticas<<endl;
-            cout<<setw(20)<<"--------------------------"<<endl;
+            cout<<"DNI: "<<alumnos[i].dni<<endl;
+            cout<<"Número de teléfono: "<<alumnos[i].numeroTelefono<<endl;
+            cout<<"Número de prácticas hechas: "<<alumnos[i].nPracticas<<endl;
+            if(alumnos[i].nPracticas>0){
+                cout<< "-------------------------------------------------" << endl;
+                cout<<string(11,' ')<<"---Prácticas del alumno---"<<endl;
+                for(int j=0;j<alumnos[i].nPracticas;j++){
+                    cout<<string(17,' ')<<"-Práctica nº"<<j+1<<"-"<<endl<<endl;
+                    cout<<"Matrícula del vehículo usado: "<<alumnos[i].clasesRealizadas[j].matricula<<endl;
+                    cout<<"Fecha: "<<alumnos[i].clasesRealizadas[j].fechaPractica.dia<<"/"<<alumnos[i].clasesRealizadas[j].fechaPractica.mes<<"/"<<alumnos[i].clasesRealizadas[j].fechaPractica.año<<endl;
+                    cout<<"Hora de inicio: "<<alumnos[i].clasesRealizadas[j].fechaPractica.hora<<":"<<alumnos[i].clasesRealizadas[j].fechaPractica.minutos<<endl;
+                    cout<<"Duración de la clase en minutos: "<<alumnos[i].clasesRealizadas[j].duracionPractica<<endl;
+                    cout<<"Kilómetros recorridos: "<<alumnos[i].clasesRealizadas[j].kmRecorridos<<" km"<<endl;
+                    cout<<"Precio de la clase: "<<alumnos[i].clasesRealizadas[j].precioClase<<"€"<<endl;
+                }
+            }
+            cout << "-------------------------------------------------" << endl;
+            
         }
         cout<<"Pulsa enter para salir.";
-        //El programa no avanza hasta que el usuario pulse enter
         cin.get();
         clear;
         
@@ -224,7 +236,7 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                     cout << "Número de teléfono: " << alumnos[i].numeroTelefono << endl;
                     cout << "--------------------------" << endl;
 
-                    cout << "Que dato desea modificar?" << endl;
+                    cout << "¿Qué dato desea modificar?" << endl;
                     cout << "1 - Nombre" << endl;
                     cout << "2 - Apellidos" << endl;
                     cout << "3 - Número de teléfono" << endl;
@@ -236,7 +248,7 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                             cin.ignore();
                             cout<<"Introduce el nuevo nombre completo (SIN APELLIDOS): ";
                             getline(cin,auxAlumno.nombres);
-                            cout << "Seguro que es el dato correcto? (s/n): ";
+                            cout << "¿Seguro que es el dato correcto? (s/n): ";
 
                             cin >> confirmacion;
                             if(confirmacion == 's' || confirmacion == 'S'){
@@ -254,7 +266,7 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                             cin.ignore();
                             cout<<"Introduce los nuevos apellidos: ";
                             getline(cin,auxAlumno.apellidos);
-                            cout << "Seguro que es el dato correcto? (s/n): ";
+                            cout << "¿Seguro que es el dato correcto? (s/n): ";
 
                             cin >> confirmacion;
                             if(confirmacion == 's' || confirmacion == 'S'){
@@ -273,7 +285,7 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                             cout<<"Introduce el nuevo número de teléfono: ";
                             getline(cin,auxAlumno.numeroTelefono);
 
-                            cout << "Seguro que es el dato correcto? (s/n): ";
+                            cout << "¿Seguro que es el dato correcto? (s/n): ";
 
                             cin >> confirmacion;
                             if(confirmacion == 's' || confirmacion == 'S'){
@@ -293,6 +305,9 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
 
                             repetir = 'n';
 
+                            break;
+                        default:
+                            cout<<"Opción no válida"<<endl;
                             break;
                     }
                     
@@ -364,7 +379,7 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                     cin.ignore();
                     clear;
                     header();
-                    cout << "Quiere añadir a otro vehículo? (0-No/1-Si): ";
+                    cout << "¿Quiere añadir a otro vehículo? (0-No/1-Si): ";
                     getline(cin,opcion);
                     if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
                         clear;
@@ -375,7 +390,7 @@ void altaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                 }
             }else{
                 clear;
-                cout<<"La matricula no cumple el formato pedido. Intente de nuevo."<<endl;
+                cout<<"La matrícula no cumple el formato pedido. Intente de nuevo."<<endl;
                 sleep(1.5);
                 clear;
             }
@@ -393,7 +408,7 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
         cout<<"No hay vehículos registrados en el sistema."<<endl;
         sleep(1.5);
     }else{
-        cout<<"Introduce la matricula del vehiculo a dar de baja:";
+        cout<<"Introduce la matrícula del vehículo a dar de baja: ";
         getline(cin,auxMatricula);
         clear;
         sleep(0.5);
@@ -401,12 +416,12 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
             if(auxMatricula==vehiculos[i].matricula){
                 header();
                 encontrado=true;
-                cout<<"Información del vehciulo a dar de baja"<<endl;
+                cout<<"Información del vehículo a dar de baja"<<endl;
                 cout << "-------------------------------------------------" << endl;
-                cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-                cout<<"Marca:"<<vehiculos[i].marca<<endl;
-                cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-                cout<<"Tipo de vehiculo:";
+                cout<<"Matrícula: "<<vehiculos[i].matricula<<endl;
+                cout<<"Marca: "<<vehiculos[i].marca<<endl;
+                cout<<"Modelo: "<<vehiculos[i].modelo<<endl;
+                cout<<"Tipo de vehículo: ";
                 switch(vehiculos[i].tipoVehiculo){
                     case 0:
                         cout<<" Coche"<<endl;
@@ -419,14 +434,14 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                         break;
                 }
                 cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                cout<<"Estado:";
+                cout<<"Estado: ";
                 if(vehiculos[i].estado==0){
                     cout<<"En mantenimiento"<<endl;
                 }else{
                     cout<<"Disponible"<<endl;
                 }
                 sleep(0.5);
-                cout<<"¿Estás seguro de que quieres dar de baja a este vehiculo(0-No/1-Si)?";
+                cout<<"¿Estás seguro de que quieres dar de baja a este vehículo (0-No/1-Si)? ";
                 getline(cin,opcion);
                 //Solo se acepta si para evitar eliminaciones sin querer
                 if(opcion == "si"||opcion == "Si"||opcion == "SI"||opcion == "s"||opcion == "S"||opcion == "1"){
@@ -434,14 +449,14 @@ void bajaVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                         vehiculos[j]=vehiculos[j+1];
                     }        
                     nVehiculos--;
-                    cout<<"Vehiculo eliminado con éxito."<<endl;
+                    cout<<"Vehículo eliminado con éxito."<<endl;
                     sleep(1.5);
                 }
             }
         }
         if(encontrado==false){
             header();
-            cout<<"Ningun vehículo tiene esa matricula."<<endl;
+            cout<<"Ningún vehículo tiene esa matrícula."<<endl;
             sleep(1.5);
         }
         clear;
@@ -455,7 +470,7 @@ void mostrarMAtricula(Tvehiculo vehiculos[], int nVehiculos){
     cin.ignore();
     header();
 
-    cout << "Introduzca la matricula del vehiculo/s a buscar: ";
+    cout << "Introduzca la matrícula del vehículo/s a buscar: ";
     cin >> busqueda;
     bool encontrado = false;
     clear;
@@ -465,10 +480,10 @@ void mostrarMAtricula(Tvehiculo vehiculos[], int nVehiculos){
         // La función .find() devuelve string::npos si NO encuentra la coincidencia.
         // Si es diferente de npos, significa que SÍ lo encontró.
         if (vehiculos[i].matricula.find(busqueda) != string::npos) {
-            cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-            cout<<"Marca:"<<vehiculos[i].marca<<endl;
-            cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-            cout<<"Tipo de vehiculo:";
+            cout<<"Matrícula: "<<vehiculos[i].matricula<<endl;
+            cout<<"Marca: "<<vehiculos[i].marca<<endl;
+            cout<<"Modelo: "<<vehiculos[i].modelo<<endl;
+            cout<<"Tipo de vehículo: ";
             switch(vehiculos[i].tipoVehiculo){
                 case 0:
                     cout<<" Coche"<<endl;
@@ -481,7 +496,7 @@ void mostrarMAtricula(Tvehiculo vehiculos[], int nVehiculos){
                     break;
             }
             cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-            cout<<"Estado:";
+            cout<<"Estado: ";
             if(vehiculos[i].estado==0){
                 cout<<"En mantenimiento"<<endl;
             }else{
@@ -502,23 +517,24 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
     cin.ignore();
     header();
     if(nVehiculos<1){
-        cout<<"No hay vehiculos registrados en el sistema."<<endl;
+        cout<<"No hay vehículos registrados en el sistema."<<endl;
         sleep(1.5);
         clear;
     }else{
-        cout<<"1- Mostrar todos los vehiculos"<<endl;
+        cout<<"1- Mostrar todos los vehículos"<<endl;
         cout<<"2- Mostrar los vehículos disponibles"<<endl;
         cout<<"3- Mostrar los vehículos en mantenimiento"<<endl;
-        cout<<"4- Mostrar los vehículos ordenados por letras de matricula"<<endl;
+        cout<<"4- Mostrar los vehículos ordenados por letras de matrícula"<<endl;
         cin>> opcion;
+        clear;
         switch(opcion){
             case 1:
                 for(int i=0;i<nVehiculos;i++){
                     cout << "-------------------------------------------------" << endl;
-                    cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-                    cout<<"Marca:"<<vehiculos[i].marca<<endl;
-                    cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-                    cout<<"Tipo de vehiculo:";
+                    cout<<"Matrícula: "<<vehiculos[i].matricula<<endl;
+                    cout<<"Marca: "<<vehiculos[i].marca<<endl;
+                    cout<<"Modelo: "<<vehiculos[i].modelo<<endl;
+                    cout<<"Tipo de vehículo: ";
                     switch(vehiculos[i].tipoVehiculo){
                         case 0:
                             cout<<" Coche"<<endl;
@@ -531,7 +547,7 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                             break;
                     }
                     cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                    cout<<"Estado:";
+                    cout<<"Estado: ";
                     if(vehiculos[i].estado==0){
                         cout<<"En mantenimiento"<<endl;
                     }else{
@@ -544,10 +560,10 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                 for(int i =0; i<nVehiculos; i++){
                     if(vehiculos[i].estado==1){
                         cout << "-------------------------------------------------" << endl;
-                        cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-                        cout<<"Marca:"<<vehiculos[i].marca<<endl;
-                        cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-                        cout<<"Tipo de vehiculo:";
+                        cout<<"Matrícula: "<<vehiculos[i].matricula<<endl;
+                        cout<<"Marca: "<<vehiculos[i].marca<<endl;
+                        cout<<"Modelo: "<<vehiculos[i].modelo<<endl;
+                        cout<<"Tipo de vehículo: ";
                         switch(vehiculos[i].tipoVehiculo){
                             case 0:
                                 cout<<" Coche"<<endl;
@@ -560,7 +576,7 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                                 break;
                         }
                         cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                        cout<<"Estado:";
+                        cout<<"Estado: ";
                         if(vehiculos[i].estado==0){
                             cout<<"En mantenimiento"<<endl;
                         }else{
@@ -572,10 +588,10 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                 for(int i =0; i<nVehiculos; i++){
                     if(vehiculos[i].estado==0){
                         cout << "-------------------------------------------------" << endl;
-                        cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-                        cout<<"Marca:"<<vehiculos[i].marca<<endl;
-                        cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-                        cout<<"Tipo de vehiculo:";
+                        cout<<"Matrícula: "<<vehiculos[i].matricula<<endl;
+                        cout<<"Marca: "<<vehiculos[i].marca<<endl;
+                        cout<<"Modelo: "<<vehiculos[i].modelo<<endl;
+                        cout<<"Tipo de vehículo: ";
                         switch(vehiculos[i].tipoVehiculo){
                             case 0:
                                 cout<<" Coche"<<endl;
@@ -588,7 +604,7 @@ void mostrarVehiculos(Tvehiculo vehiculos[], int nVehiculos){
                                 break;
                         }
                         cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                        cout<<"Estado:";
+                        cout<<"Estado: ";
                         if(vehiculos[i].estado==0){
                             cout<<"En mantenimiento"<<endl;
                         }else{
@@ -622,7 +638,7 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
         sleep(1.5);
         clear;
     }else{
-        cout << "Introduzca la matricula del vehiculo/s a buscar: ";
+        cout << "Introduzca la matrícula del vehículo/s a buscar: ";
         cin >> busqueda;
         bool encontrado = false;
         clear;
@@ -632,10 +648,10 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                     header();
                     cout << "--- RESULTADOS DE BÚSQUEDA ---" << endl;
                     cout << "-------------------------------------------------" << endl;
-                    cout<<"Matricula:"<<vehiculos[i].matricula<<endl;
-                    cout<<"Marca:"<<vehiculos[i].marca<<endl;
-                    cout<<"Modelo:"<<vehiculos[i].modelo<<endl;
-                    cout<<"Tipo de vehiculo:";
+                    cout<<"Matrícula: "<<vehiculos[i].matricula<<endl;
+                    cout<<"Marca: "<<vehiculos[i].marca<<endl;
+                    cout<<"Modelo: "<<vehiculos[i].modelo<<endl;
+                    cout<<"Tipo de vehículo: ";
                     switch(vehiculos[i].tipoVehiculo){
                         case 0:
                             cout<<" Coche"<<endl;
@@ -648,7 +664,7 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                             break;
                     }
                     cout<<"Kilometraje: "<<vehiculos[i].kilometraje<<endl;
-                    cout<<"Estado:";
+                    cout<<"Estado: ";
                     if(vehiculos[i].estado==0){
                         cout<<"En mantenimiento"<<endl;
                     }else{
@@ -656,14 +672,14 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                     }
                     encontrado = true;
                     cout << "--------------------------" << endl;
-                    cout << "1 - Matricula" << endl;
+                    cout << "1 - Matrícula" << endl;
                     cout << "2 - Marca" << endl;
                     cout << "3 - Modelo" << endl;
                     cout << "4 - Kilometraje" << endl;
                     cout << "5 - Estado" << endl;
                     cout << "0 - Salir" << endl;
                     cout << "--------------------------" << endl;
-                    cout << "Que datos desea modificar?: ";
+                    cout << "¿Qué datos desea modificar?: ";
                     cin >> opcion;
                     clear;
                     switch(opcion){
@@ -674,19 +690,20 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
                             break;
                         case 1:
                             do{
-                                cout<<"Introduzca la matricula nueva del vehículo: ";
+                                cout<<"Introduzca la matrícula nueva del vehículo: ";
                                 cin>>auxMatricula;  
                                 if(auxMatricula.length()!=7){
                                     clear;
-                                    cout<<"Formato de matricula incorrecto. Vuelva a intentarlo."<<endl;
+                                    cout<<"Formato de matrícula incorrecto. Vuelva a intentarlo."<<endl;
                                     sleep(1.5);
                                     clear;
                                 }
                             }while(auxMatricula.length()!=7);                        
-                            cout<<"¿Seguro que desea modificar la matricula? (S / N)"<<endl;
+                            cout<<"¿Seguro que desea modificar la matrícula? (S / N)"<<endl;
                             cin>>confirmar;
                             clear;
                             if(confirmar == 'S' || confirmar=='s'){
+                                vehiculos[i].matricula=auxMatricula;
                                 cout<<"La modificación se ha realizado con éxito."<<endl;
                                 cout<<endl;
                                 cout<<"¿Desea modificar algún dato más? (S/N)"<<endl;
@@ -776,6 +793,172 @@ void modificarVehiculo(Tvehiculo vehiculos[], int &nVehiculos){
         }
     }
 
+void darDeAltaClase(Talumno alumnos[], int nAlumnos, Tvehiculo vehiculos[], int nVehiculos){
+    cin.ignore();
+    clear;
+    string auxDNI, auxMatricula;
+    int numAlumno=0, numVehiculo=0;
+    bool existeDNI=false, existeVehiculo=false;
+    header();
+    cout<<"Introduce el DNI del alumno: ";
+    getline(cin, auxDNI);
+    //Comprobacion de que el DNI esta en el sistema
+    for(int i=0;i<nAlumnos;i++){
+        if(alumnos[i].dni==auxDNI) {
+            existeDNI=true;
+            numAlumno=i;
+        }
+    }
+    if(existeDNI==false){
+        clear;
+        header();
+        cout<<"El DNI introducido no está registrado en el sistema."<<endl;
+        sleep(1.5);
+    }else{
+        if(alumnos[numAlumno].nPracticas>=100){
+            clear;
+            header();
+            cout<<"El alumno ha realizado el número máximo de prácticas permitido."<<endl;
+            sleep(1.5);
+            clear;
+        }else{
+            clear;
+            header();
+            cout<<"Introduce la matrícula del vehículo con el que se realizó la práctica: ";
+            getline(cin, auxMatricula);
+            for(int i=0;i<nVehiculos;i++){
+                if(auxMatricula==vehiculos[i].matricula){
+                    existeVehiculo=true;
+                    alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].matricula=auxMatricula;
+                    numVehiculo=i;
+                }
+            }
+            if(existeVehiculo==false){
+                clear;
+                header();
+                // Corregido "matricula"
+                cout<<"La matrícula introducida no está registrada en el sistema."<<endl;
+                sleep(1.5);
+                clear;
+            }else{
+                    clear;
+                    //No sale del bucle hasta que no introduzca una fecha válida
+
+                    //DIAS
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce el día en el que se realizó la práctica (1-31): ";
+                        cin>>alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.dia;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.dia<1 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.dia > 31){
+                            clear;
+                            cout<<"Día no válido. Intente de nuevo"<<endl;
+                            sleep(1.5);
+                            clear;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.dia<1 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.dia > 31);
+                    cout<<endl;
+
+                    //MESES
+                   do{
+                        clear;
+                        header();
+                        cout<<"Introduce el mes en el que se realizó la práctica (1-12): ";
+                        cin>>alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.mes;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.mes<1 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.mes > 12){
+                            clear;
+                            cout<<"Mes no válido. Intente de nuevo"<<endl;
+                            sleep(1.5);
+                            clear;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.mes<1 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.mes > 12);
+                    cout<<endl;
+
+                    //AÑOS
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce el año en el que se realizó la práctica (1900-2026): ";
+                        cin>>alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.año;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.año<1900 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.año > 2026){
+                            clear;
+                            cout<<"Año no válido. Intente de nuevo"<<endl;
+                            sleep(1.5);
+                            clear;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.año<1900 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.año > 2026);
+
+                    //Hora
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce la hora en la que se realizó la práctica (1-24): ";
+                        cin>>alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.hora;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.hora<1 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.hora > 24){
+                            clear;
+                            cout<<"Hora no válida. Intente de nuevo"<<endl;
+                            sleep(1.5);
+                            clear;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.hora<1 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.hora > 24);
+
+                    //Minutos
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce el minuto en el que se realizó la práctica (0-59): ";
+                        cin>>alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.minutos;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.minutos<0 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.minutos > 59){
+                            clear;
+                            cout<<"Minutos no válidos. Intente de nuevo"<<endl;
+                            sleep(1.5);
+                            clear;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.minutos<0 || alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].fechaPractica.minutos > 59);
+
+                    //Duracion
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce la duración de la práctica en minutos: ";
+                        cin>>alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].duracionPractica;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].duracionPractica<0){
+                            clear;
+                            cout<<"Duración no válida. Intente de nuevo"<<endl;
+                            sleep(1.5);
+                            clear;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].duracionPractica<0);
+
+                    //Kilometros recorridos
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce los kilómetros recorridos: ";
+                        cin >> alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].kmRecorridos;
+                        if(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].kmRecorridos<0){
+                            clear;
+                            cout<<"Valor inválido. Intente de nuevo."<<endl;
+                            clear;
+                        }else{
+                            vehiculos[numVehiculo].kilometraje+=alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].kmRecorridos;
+                        }
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].kmRecorridos<0);
+
+                    //Precio de la clase
+                    do{
+                        clear;
+                        header();
+                        cout<<"Introduce el precio total de la clase: ";
+                        cin >> alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].precioClase;
+                    }while(alumnos[numAlumno].clasesRealizadas[alumnos[numAlumno].nPracticas].precioClase < 0);
+                    alumnos[numAlumno].nPracticas++;
+
+            }
+        }
+    }
+
+}
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -797,7 +980,7 @@ void menuAlumnos(Talumno alumnos[],int &nAlumnos){
         cin >> opcion;
 
         if((opcion < 0) || (opcion > 3)){
-            cout << "RANGO INVALIDO" << endl;
+            cout << "RANGO INVÁLIDO" << endl;
             sleep(1);
             cout << "INTENTE DE NUEVO" << endl;
             sleep(1);
@@ -832,9 +1015,9 @@ void menuVehiculos(Tvehiculo vehiculos[], int &nVehiculos){
             clear;
 
             header();
-            cout << "1 - " << setw(5) << "Dar de alta a un vahiculo nuevo" << endl;
-            cout << "2 - " << setw(5) << "Dar de baja a un vehiculo" << endl;
-            cout << "3 - " << setw(5) << "Modificar datos de un vehiculo" << endl;
+            cout << "1 - " << setw(5) << "Dar de alta a un vehículo nuevo" << endl;
+            cout << "2 - " << setw(5) << "Dar de baja a un vehículo" << endl;
+            cout << "3 - " << setw(5) << "Modificar datos de un vehículo" << endl;
             cout << "0 - " << setw(5) << "Salir" << endl;
             cout << "--------------------------------------------" << endl;
             cout << "Introduzca una opción: ";
@@ -842,7 +1025,7 @@ void menuVehiculos(Tvehiculo vehiculos[], int &nVehiculos){
             cin >> opcion;
 
             if((opcion < 0) || (opcion > 3)){
-                cout << "RANGO INVALIDO" << endl;
+                cout << "RANGO INVÁLIDO" << endl;
                 sleep(1);
                 cout << "INTENTE DE NUEVO" << endl;
                 sleep(1);
@@ -884,7 +1067,7 @@ void menuListas(Talumno alumnos[], int nAlumnos , Tvehiculo vehiculos[], int nVe
         do{
             header();
             cout << "1 - " << setw(5) << "Mostrar alumnos" << endl;
-            cout << "2 - " << setw(5) << "Mostrar vehiculos" << endl;
+            cout << "2 - " << setw(5) << "Mostrar vehículos" << endl;
             cout << "0 - " << setw(5) << "Salir" << endl;
             cout << "--------------------------------------------" << endl;
             cout << "Introduzca una opción: ";
@@ -892,7 +1075,7 @@ void menuListas(Talumno alumnos[], int nAlumnos , Tvehiculo vehiculos[], int nVe
             cin >> opcion;
 
             if((opcion < 0) || (opcion >= 3)){
-                cout << "RANGO INVALIDO" << endl;
+                cout << "RANGO INVÁLIDO" << endl;
                 sleep(1);
                 cout << "INTENTE DE NUEVO" << endl;
                 sleep(1);
@@ -918,7 +1101,7 @@ int menu(){
 
     header();
     cout << "1 - " << setw(5) << "Gestionar alumnos" << endl;
-    cout << "2 - " << setw(5) << "Gestionar vehiculos" << endl;
+    cout << "2 - " << setw(5) << "Gestionar vehículos" << endl;
     cout << "3 - " << setw(5) << "Dar de alta una clase" << endl;
     cout << "4 - " << setw(5) << "Mostrar listas" << endl;
     cout << "0 - " << setw(5) << "Salir" << endl;
@@ -926,7 +1109,7 @@ int menu(){
     cout << "Introduzca una opción: ";
     cin >> opcion; 
     if((opcion < 0) || (opcion > 4)){
-        cout << "RANGO INVALIDO" << endl;
+        cout << "RANGO INVÁLIDO" << endl;
         sleep(1);
         cout << "INTENTE DE NUEVO" << endl;
         sleep(1);
@@ -938,7 +1121,95 @@ int menu(){
 }
 //Funciones del menú------------------------------------------------------------------------------------------------------------------------------------------
 
+//Ejemplos para probar el codigo
+// --- FUNCIÓN PARA CARGAR DATOS DE PRUEBA AUTOMÁTICAMENTE ---
+void cargarDatosDePrueba(Talumno alumnos[], int &nAlumnos, Tvehiculo vehiculos[], int &nVehiculos) {
+    // ALUMNO 1 (DNI válido: 12345678Z)
+    alumnos[nAlumnos].dni = "12345678Z";
+    alumnos[nAlumnos].nombres = "Daniel";
+    alumnos[nAlumnos].apellidos = "Iliev Arkhipov";
+    alumnos[nAlumnos].numeroTelefono = "+34 600111222";
+    alumnos[nAlumnos].nPracticas = 0;
+    nAlumnos++;
 
+    // ALUMNO 2 (DNI válido: 11111111H)
+    alumnos[nAlumnos].dni = "11111111H";
+    alumnos[nAlumnos].nombres = "Carlos";
+    alumnos[nAlumnos].apellidos = "Hernandez Fernandez";
+    alumnos[nAlumnos].numeroTelefono = "+34 600333444";
+    alumnos[nAlumnos].nPracticas = 0;
+    nAlumnos++;
+
+    // ALUMNO 3 (DNI válido: 22222222J)
+    alumnos[nAlumnos].dni = "22222222J";
+    alumnos[nAlumnos].nombres = "Sergio";
+    alumnos[nAlumnos].apellidos = "Paya Romero";
+    alumnos[nAlumnos].numeroTelefono = "+34 600555666";
+    alumnos[nAlumnos].nPracticas = 0;
+    nAlumnos++;
+
+    // VEHICULO 1 (Coche - Disponible)
+    vehiculos[nVehiculos].matricula = "1234ABC";
+    vehiculos[nVehiculos].marca = "Toyota";
+    vehiculos[nVehiculos].modelo = "Yaris";
+    vehiculos[nVehiculos].tipoVehiculo = 0; // Coche
+    vehiculos[nVehiculos].kilometraje = 50000.5;
+    vehiculos[nVehiculos].estado = 1; // Disponible
+    nVehiculos++;
+
+    // VEHICULO 2 (Moto - Mantenimiento)
+    vehiculos[nVehiculos].matricula = "5678DEF";
+    vehiculos[nVehiculos].marca = "Yamaha";
+    vehiculos[nVehiculos].modelo = "MT-07";
+    vehiculos[nVehiculos].tipoVehiculo = 1; // Moto
+    vehiculos[nVehiculos].kilometraje = 12000.0;
+    vehiculos[nVehiculos].estado = 0; // Mantenimiento
+    nVehiculos++;
+
+    // VEHICULO 3 (Camión - Disponible)
+    vehiculos[nVehiculos].matricula = "9012GHI";
+    vehiculos[nVehiculos].marca = "Volvo";
+    vehiculos[nVehiculos].modelo = "FH16";
+    vehiculos[nVehiculos].tipoVehiculo = 2; // Camión
+    vehiculos[nVehiculos].kilometraje = 150000.0;
+    vehiculos[nVehiculos].estado = 1; // Disponible
+    nVehiculos++;
+
+    // --- AÑADIDO: EJEMPLOS DE CLASES PRÁCTICAS ---
+
+    // Práctica 1: Daniel (Alumno index 0) hace práctica con el Toyota (Vehículo index 0)
+    int idAlum1 = 0; 
+    int idVeh1 = 0;
+    alumnos[idAlum1].clasesRealizadas[0].matricula = vehiculos[idVeh1].matricula;
+    alumnos[idAlum1].clasesRealizadas[0].fechaPractica.dia = 10;
+    alumnos[idAlum1].clasesRealizadas[0].fechaPractica.mes = 5;
+    alumnos[idAlum1].clasesRealizadas[0].fechaPractica.año = 2024;
+    alumnos[idAlum1].clasesRealizadas[0].fechaPractica.hora = 11;
+    alumnos[idAlum1].clasesRealizadas[0].fechaPractica.minutos = 30;
+    alumnos[idAlum1].clasesRealizadas[0].duracionPractica = 45;
+    alumnos[idAlum1].clasesRealizadas[0].precioClase = 30;
+    alumnos[idAlum1].clasesRealizadas[0].kmRecorridos = 15.5;
+    alumnos[idAlum1].nPracticas++; 
+    vehiculos[idVeh1].kilometraje += 15.5; // Actualizamos el KM del coche
+
+    // Práctica 2: Carlos (Alumno index 1) hace práctica con el Camión (Vehículo index 2)
+    int idAlum2 = 1;
+    int idVeh2 = 2;
+    alumnos[idAlum2].clasesRealizadas[0].matricula = vehiculos[idVeh2].matricula;
+    alumnos[idAlum2].clasesRealizadas[0].fechaPractica.dia = 12;
+    alumnos[idAlum2].clasesRealizadas[0].fechaPractica.mes = 6;
+    alumnos[idAlum2].clasesRealizadas[0].fechaPractica.año = 2024;
+    alumnos[idAlum2].clasesRealizadas[0].fechaPractica.hora = 16;
+    alumnos[idAlum2].clasesRealizadas[0].fechaPractica.minutos = 00;
+    alumnos[idAlum2].clasesRealizadas[0].duracionPractica = 60;
+    alumnos[idAlum2].clasesRealizadas[0].precioClase = 50;
+    alumnos[idAlum2].clasesRealizadas[0].kmRecorridos = 40.0;
+    alumnos[idAlum2].nPracticas++;
+    vehiculos[idVeh2].kilometraje += 40.0; // Actualizamos el KM del camión
+
+    cout << ">>> DATOS DE PRUEBA Y CLASES CARGADOS CORRECTAMENTE <<<" << endl;
+    sleep(1);
+}
 
 //Función main------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
@@ -948,7 +1219,7 @@ int main(){
     Tpractica practicas[PRACTICASMAX];
 
     int opcion, nAlumnos = 0, nVehiculos=0, nClases=0;
-
+    cargarDatosDePrueba(alumnos, nAlumnos, vehiculos, nVehiculos);
     //Función del menu principal
     do{
         opcion = menu();
@@ -963,7 +1234,7 @@ int main(){
                 break;
             }
             case 3:{
-                //Implementar funcion de las clases practicas
+                darDeAltaClase(alumnos, nAlumnos, vehiculos, nVehiculos);
                 break;
             }
             case 4:{
