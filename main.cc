@@ -13,7 +13,8 @@
 
 using namespace std;
 
-const int ALUMNOSMAX = 100, VEHICULOSMAX = 20, PRACTICASMAX = 100;
+// --- NUEVO: Aumentamos constantes ---
+const int ALUMNOSMAX = 100, VEHICULOSMAX = 20, PRACTICASMAX = 100, FACTURASMAX = 100;
 
 //Registros----------------------------------------------------------------------------------------------------------------------------------------------------
 struct Tvehiculo {
@@ -37,8 +38,20 @@ struct Tpractica{
 struct Talumno{
     string dni;
     string nombres, apellidos, numeroTelefono;
+    // --- NUEVO: Datos del responsable ---
+    string nombreResponsable;
+    string telefonoResponsable;
+    // ------------------------------------
     Tpractica clasesRealizadas[PRACTICASMAX];
     int nPracticas;
+};
+
+// --- NUEVO: Estructura para Facturas ---
+struct Tfactura {
+    int idFactura;
+    string nombreCliente; // Responsable
+    int numClases;
+    float importeTotal;
 };
 //Registros---------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -115,6 +128,16 @@ void altaAlumno(Talumno alumnos[], int &nAlumnos){
                 getline(cin, alumnos[i].numeroTelefono);
                 sleep(0.5);
 
+                // --- NUEVO: Petición de datos del responsable ---
+                cout << "INTRODUZCA EL NOMBRE DEL RESPONSABLE: ";
+                getline(cin, alumnos[i].nombreResponsable);
+                sleep(0.5);
+
+                cout << "INTRODUZCA EL TELÉFONO DEL RESPONSABLE: ";
+                getline(cin, alumnos[i].telefonoResponsable);
+                sleep(0.5);
+                // ------------------------------------------------
+
                 alumnos[i].nPracticas = 0;
                 nAlumnos++;
 
@@ -149,6 +172,7 @@ void bajaAlumno(Talumno alumnos[], int &nAlumnos){
             cout<<"Nombre: "<<alumnos[i].nombres<<" "<<alumnos[i].apellidos<<endl;
             cout<<"DNI: "<<alumnos[i].dni<<endl;
             cout<<"Número de teléfono: "<<alumnos[i].numeroTelefono<<endl;
+            cout<<"Responsable: "<<alumnos[i].nombreResponsable<<endl; // NUEVO
             cout<<"Número de prácticas hechas: "<<alumnos[i].nPracticas<<endl;
             sleep(0.5);
             cout<<"¿Estás seguro de que quieres dar de baja a este alumno (0-No/1-Si)? ";
@@ -174,12 +198,15 @@ void mostrarAlumnos(Talumno alumnos[], int nAlumnos){
     if(nAlumnos>0){
         for(int i=0;i<nAlumnos;i++){
             header();
-            //string(18,' ') sirve para crear un string de 18 carácteres lleno de espacios, es para centrar los subtitulos
             cout<<string(18,' ')<<"-Alumno nº"<<i+1<<"-"<<endl<<endl;
             sleep(0.5);
             cout<<"Nombre: "<<alumnos[i].nombres<<" "<<alumnos[i].apellidos<<endl;
             cout<<"DNI: "<<alumnos[i].dni<<endl;
             cout<<"Número de teléfono: "<<alumnos[i].numeroTelefono<<endl;
+            // --- NUEVO: Mostrar responsable ---
+            cout<<"Responsable: " << alumnos[i].nombreResponsable << endl;
+            cout<<"Tlf Responsable: " << alumnos[i].telefonoResponsable << endl;
+            // ----------------------------------
             cout<<"Número de prácticas hechas: "<<alumnos[i].nPracticas<<endl;
             if(alumnos[i].nPracticas>0){
                 cout<< "-------------------------------------------------" << endl;
@@ -234,12 +261,20 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                     cout << "Nombre: " << alumnos[i].nombres << endl;
                     cout << "Apellidos: " << alumnos[i].apellidos << endl;
                     cout << "Número de teléfono: " << alumnos[i].numeroTelefono << endl;
+                    // --- NUEVO: Mostrar datos responsable ---
+                    cout << "Nombre Responsable: " << alumnos[i].nombreResponsable << endl;
+                    cout << "Teléfono Responsable: " << alumnos[i].telefonoResponsable << endl;
+                    // ----------------------------------------
                     cout << "--------------------------" << endl;
 
                     cout << "¿Qué dato desea modificar?" << endl;
                     cout << "1 - Nombre" << endl;
                     cout << "2 - Apellidos" << endl;
                     cout << "3 - Número de teléfono" << endl;
+                    // --- NUEVO: Opciones menú modificar ---
+                    cout << "4 - Nombre Responsable" << endl;
+                    cout << "5 - Teléfono Responsable" << endl;
+                    // --------------------------------------
                     cout << "0 - Salir" << endl;
                     cin >> opcion;
 
@@ -256,10 +291,8 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                                 cout<<"Nombre modificado con éxito."<<endl;
                             }
                             sleep(1);
-                            
                             cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
                             cin >> repetir;
-                            
                             break;
 
                         case '2':
@@ -274,10 +307,8 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                                 cout<<"Apellidos modificados con éxito."<<endl;
                             }
                             sleep(1);
-                            
                             cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
                             cin >> repetir;
-                            
                             break;
 
                         case '3':
@@ -293,11 +324,41 @@ void modificarAlumno(Talumno alumnos[], int nAlumnos){
                                 cout<<"Número de teléfono modificado con éxito."<<endl;
                             }
                             sleep(1);
-                            
                             cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
                             cin >> repetir;
-                            
                             break;
+
+                        // --- NUEVO: Cases para modificar responsable ---
+                        case '4':
+                            cin.ignore();
+                            cout<<"Introduce el nuevo nombre del responsable: ";
+                            getline(cin,auxAlumno.nombreResponsable);
+                            cout << "¿Seguro que es el dato correcto? (s/n): ";
+                            cin >> confirmacion;
+                            if(confirmacion == 's' || confirmacion == 'S'){
+                                alumnos[i].nombreResponsable = auxAlumno.nombreResponsable;
+                                cout<<"Nombre del responsable modificado con éxito."<<endl;
+                            }
+                            sleep(1);
+                            cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                            cin >> repetir;
+                            break;
+                        
+                        case '5':
+                            cin.ignore();
+                            cout<<"Introduce el nuevo teléfono del responsable: ";
+                            getline(cin,auxAlumno.telefonoResponsable);
+                            cout << "¿Seguro que es el dato correcto? (s/n): ";
+                            cin >> confirmacion;
+                            if(confirmacion == 's' || confirmacion == 'S'){
+                                alumnos[i].telefonoResponsable = auxAlumno.telefonoResponsable;
+                                cout<<"Teléfono del responsable modificado con éxito."<<endl;
+                            }
+                            sleep(1);
+                            cout << "¿Desea modificar otro dato de este alumno? (s/n): ";
+                            cin >> repetir;
+                            break;
+                        // -----------------------------------------------
 
                         case '0':
                             cout<<"Saliendo del menú de modificación."<<endl;
@@ -961,6 +1022,140 @@ void darDeAltaClase(Talumno alumnos[], int nAlumnos, Tvehiculo vehiculos[], int 
 }
 //Funciones solicitadas---------------------------------------------------------------------------------------------------------------------------------------
 
+// --- Funciones examen --------------------------------------------------------------------------------------------------------------------------------------
+void emitirFactura(Talumno alumnos[], int nAlumnos, Tfactura facturas[], int &nFacturas) {
+    clear;
+    header();
+    cin.ignore();
+
+    if (nFacturas >= FACTURASMAX) {
+        cout << "NO SE PUEDEN EMITIR MÁS FACTURAS (MEMORIA LLENA)" << endl;
+        sleep(2);
+        return;
+    }
+
+    string nombreResponsableBusqueda;
+    cout << "Introduce el nombre del responsable: ";
+    getline(cin, nombreResponsableBusqueda);
+
+    // Buscar alumnos asociados a ese responsable
+    int indicesEncontrados[ALUMNOSMAX]; // Guardamos el índice 'i' de los alumnos que coinciden
+    int cantidadEncontrados = 0;
+
+    for (int i = 0; i < nAlumnos; i++) {
+        if (alumnos[i].nombreResponsable == nombreResponsableBusqueda) {
+            indicesEncontrados[cantidadEncontrados] = i;
+            cantidadEncontrados++;
+        }
+    }
+
+    if (cantidadEncontrados == 0) {
+        cout << "ERROR: No se ha encontrado ningún responsable con ese nombre." << endl;
+        sleep(2);
+    } else {
+        // Seleccionar alumno si hay varios, o confirmar si hay uno
+        int indiceAlumnoSeleccionado = -1;
+        
+        cout << "\nSe han encontrado los siguientes alumnos para el responsable " << nombreResponsableBusqueda << ":" << endl;
+        for (int k = 0; k < cantidadEncontrados; k++) {
+            int realIndex = indicesEncontrados[k];
+            cout << k + 1 << " - " << alumnos[realIndex].nombres << " " << alumnos[realIndex].apellidos 
+                 << " (DNI: " << alumnos[realIndex].dni << ")" << endl;
+        }
+
+        int opcionAlumno;
+        do {
+            cout << "Seleccione el número del alumno para facturar (1-" << cantidadEncontrados << "): ";
+            cin >> opcionAlumno;
+            if (opcionAlumno < 1 || opcionAlumno > cantidadEncontrados) {
+                cout << "Opción inválida." << endl;
+            }
+        } while (opcionAlumno < 1 || opcionAlumno > cantidadEncontrados);
+
+        indiceAlumnoSeleccionado = indicesEncontrados[opcionAlumno - 1];
+        Talumno &alu = alumnos[indiceAlumnoSeleccionado]; // Referencia para escribir menos
+
+        // Generar Factura
+        int nuevoNumeroFactura = nFacturas + 1;
+        float totalImporte = 0.0;
+        int totalClases = alu.nPracticas;
+
+        // Calcular totales
+        for (int j = 0; j < alu.nPracticas; j++) {
+            totalImporte += alu.clasesRealizadas[j].precioClase;
+        }
+
+        // Mostrar Factura en Pantalla (Formato solicitado)
+        clear;
+        cout << "Autoescuela Campus" << string(19, ' ') << endl;
+        cout << "Alicante" << endl;
+        cout << "----------------------------------------" << endl;
+        cout << endl;
+        cout << "Factura nº " << nuevoNumeroFactura << endl;
+        cout << "Cliente .: " << alu.nombreResponsable << " responsable " << alu.telefonoResponsable << endl;
+        cout << "Alumno . : dni " << alu.dni << " nombre del alumno " << alu.nombres << endl;
+        cout << endl;
+        cout << "Fecha " << string(10, ' ') << "km" << string(8, ' ') << " precio" << endl;
+        cout << "----------" << string(5, ' ') << "---" << string(7, ' ') << " ------" << endl;
+
+        for (int j = 0; j < alu.nPracticas; j++) {
+            Tfecha f = alu.clasesRealizadas[j].fechaPractica;
+            cout << setfill('0') << setw(2) << f.dia << "-" << setw(2) << f.mes << "-" << f.año << setfill(' '); // Fecha
+            cout << string(5, ' ') << setw(3) << alu.clasesRealizadas[j].kmRecorridos; // Km
+            cout << string(7, ' ') << fixed << setprecision(2) << setw(6) << (float)alu.clasesRealizadas[j].precioClase << endl; // Precio
+        }
+
+        cout << string(17, ' ') << string(20, ' ') << "---------" << endl;
+        cout << totalClases << " clases" << string(3, ' ') << " Total importe  " << fixed << setprecision(2) << totalImporte << endl;
+        cout << endl;
+        cout << "----------------------------------------" << endl;
+
+        // Guardar la factura en la estructura
+        facturas[nFacturas].idFactura = nuevoNumeroFactura;
+        facturas[nFacturas].nombreCliente = alu.nombreResponsable;
+        facturas[nFacturas].numClases = totalClases;
+        facturas[nFacturas].importeTotal = totalImporte;
+        nFacturas++;
+
+        cout << "\nFactura emitida y guardada correctamente. Pulsa Enter para continuar.";
+        cin.ignore();
+        cin.get();
+    }
+}
+
+void listarFacturas(Tfactura facturas[], int nFacturas) {
+    clear;
+    header();
+    cout << "LISTADO DE FACTURAS EMITIDAS" << endl;
+    cout << endl;
+    
+    cout << "Factura  responsable " << string(13, ' ') << "clases     importe" << endl;
+    cout << "-------  ---------------- " << string(5, ' ') << "------    --------" << endl;
+
+    float sumaTotalImportes = 0.0;
+    
+    for(int i = 0; i < nFacturas; i++) {
+        cout << setw(7) << facturas[i].idFactura << "  ";
+        // Ajustamos el nombre para que no rompa la tabla, cortamos si es muy largo o rellenamos
+        string nombreMostrar = facturas[i].nombreCliente;
+        if(nombreMostrar.length() > 16) nombreMostrar = nombreMostrar.substr(0, 16);
+        cout << left << setw(16) << nombreMostrar << right;
+        cout << string(9, ' ') << setw(2) << facturas[i].numClases;
+        cout << string(5, ' ') << fixed << setprecision(2) << setw(8) << facturas[i].importeTotal << endl;
+
+        sumaTotalImportes += facturas[i].importeTotal;
+    }
+
+    cout << "-------  ---------------- " << string(5, ' ') << "------    --------" << endl;
+    cout << setw(7) << nFacturas << " facturas" << string(19, ' ') << "total   " << fixed << setprecision(2) << setw(9) << sumaTotalImportes << endl;
+
+    cout << "\nPulsa enter para salir.";
+    cin.ignore();
+    cin.get();
+    clear;
+}
+// --- Fin Funciones examen ----------------------------------------------------------------------------------------------------------------------------------
+
 
 //Funciones del menú------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1095,6 +1290,40 @@ void menuListas(Talumno alumnos[], int nAlumnos , Tvehiculo vehiculos[], int nVe
 
 }
 
+// --- NUEVO: Menú para facturación ---
+void menuFacturas(Talumno alumnos[], int nAlumnos, Tfactura facturas[], int &nFacturas) {
+    int opcion;
+    do {
+        clear;
+        header();
+        cout << "1 - Emitir factura" << endl;
+        cout << "2 - Listado de facturas" << endl;
+        cout << "0 - Salir" << endl;
+        cout << "--------------------------------------------" << endl;
+        cout << "Introduzca una opción: ";
+        cin >> opcion;
+
+        if (opcion < 0 || opcion > 2) {
+            cout << "RANGO INVÁLIDO" << endl;
+            sleep(1);
+        } else {
+            switch(opcion) {
+                case 1:
+                    emitirFactura(alumnos, nAlumnos, facturas, nFacturas);
+                    break;
+                case 2:
+                    listarFacturas(facturas, nFacturas);
+                    break;
+                case 0:
+                    break;
+            }
+        }
+
+    } while (opcion != 0);
+    clear;
+}
+// ------------------------------------
+
 int menu(){
     int opcion=0;
     clear;
@@ -1104,11 +1333,14 @@ int menu(){
     cout << "2 - " << setw(5) << "Gestionar vehículos" << endl;
     cout << "3 - " << setw(5) << "Dar de alta una clase" << endl;
     cout << "4 - " << setw(5) << "Mostrar listas" << endl;
+    // --- NUEVO: Opción 5 ---
+    cout << "5 - " << setw(5) << "Gestionar facturas" << endl;
+    // -----------------------
     cout << "0 - " << setw(5) << "Salir" << endl;
     cout << "--------------------------------------------" << endl;
     cout << "Introduzca una opción: ";
     cin >> opcion; 
-    if((opcion < 0) || (opcion > 4)){
+    if((opcion < 0) || (opcion > 5)){ // Corregido a 5
         cout << "RANGO INVÁLIDO" << endl;
         sleep(1);
         cout << "INTENTE DE NUEVO" << endl;
@@ -1129,6 +1361,10 @@ void cargarDatosDePrueba(Talumno alumnos[], int &nAlumnos, Tvehiculo vehiculos[]
     alumnos[nAlumnos].nombres = "Daniel";
     alumnos[nAlumnos].apellidos = "Iliev Arkhipov";
     alumnos[nAlumnos].numeroTelefono = "+34 600111222";
+    // --- NUEVO ---
+    alumnos[nAlumnos].nombreResponsable = "Padre Daniel";
+    alumnos[nAlumnos].telefonoResponsable = "600000001";
+    // -------------
     alumnos[nAlumnos].nPracticas = 0;
     nAlumnos++;
 
@@ -1137,6 +1373,10 @@ void cargarDatosDePrueba(Talumno alumnos[], int &nAlumnos, Tvehiculo vehiculos[]
     alumnos[nAlumnos].nombres = "Carlos";
     alumnos[nAlumnos].apellidos = "Hernandez Fernandez";
     alumnos[nAlumnos].numeroTelefono = "+34 600333444";
+    // --- NUEVO ---
+    alumnos[nAlumnos].nombreResponsable = "Madre Carlos";
+    alumnos[nAlumnos].telefonoResponsable = "600000002";
+    // -------------
     alumnos[nAlumnos].nPracticas = 0;
     nAlumnos++;
 
@@ -1145,6 +1385,10 @@ void cargarDatosDePrueba(Talumno alumnos[], int &nAlumnos, Tvehiculo vehiculos[]
     alumnos[nAlumnos].nombres = "Sergio";
     alumnos[nAlumnos].apellidos = "Paya Romero";
     alumnos[nAlumnos].numeroTelefono = "+34 600555666";
+    // --- NUEVO ---
+    alumnos[nAlumnos].nombreResponsable = "Padre Daniel"; // Pongo el mismo que Daniel para probar búsquedas múltiples
+    alumnos[nAlumnos].telefonoResponsable = "600000001";
+    // -------------
     alumnos[nAlumnos].nPracticas = 0;
     nAlumnos++;
 
@@ -1217,6 +1461,11 @@ int main(){
     Talumno alumnos[ALUMNOSMAX];
     Tvehiculo vehiculos[VEHICULOSMAX];
     Tpractica practicas[PRACTICASMAX];
+    
+    // --- NUEVO: Array de facturas y contador ---
+    Tfactura facturas[FACTURASMAX];
+    int nFacturas = 0;
+    // -------------------------------------------
 
     int opcion, nAlumnos = 0, nVehiculos=0, nClases=0;
     cargarDatosDePrueba(alumnos, nAlumnos, vehiculos, nVehiculos);
@@ -1241,6 +1490,12 @@ int main(){
                 menuListas(alumnos, nAlumnos,vehiculos, nVehiculos);
                 break;
             }
+            // --- NUEVO: Case 5 ---
+            case 5: {
+                menuFacturas(alumnos, nAlumnos, facturas, nFacturas);
+                break;
+            }
+            // ---------------------
         }
     }while(opcion != 0);
     return 0;
